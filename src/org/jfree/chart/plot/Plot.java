@@ -1437,47 +1437,9 @@ public abstract class Plot implements AxisChangeListener,
     public static RectangleEdge resolveDomainAxisLocation(
             AxisLocation location, PlotOrientation orientation) {
 
-        ParamChecks.nullNotPermitted(location, "location");
-        ParamChecks.nullNotPermitted(orientation, "orientation");
-
-        RectangleEdge result = null;
-        if (location == AxisLocation.TOP_OR_RIGHT) {
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                result = RectangleEdge.RIGHT;
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                result = RectangleEdge.TOP;
-            }
-        }
-        else if (location == AxisLocation.TOP_OR_LEFT) {
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                result = RectangleEdge.LEFT;
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                result = RectangleEdge.TOP;
-            }
-        }
-        else if (location == AxisLocation.BOTTOM_OR_RIGHT) {
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                result = RectangleEdge.RIGHT;
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                result = RectangleEdge.BOTTOM;
-            }
-        }
-        else if (location == AxisLocation.BOTTOM_OR_LEFT) {
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                result = RectangleEdge.LEFT;
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                result = RectangleEdge.BOTTOM;
-            }
-        }
-        // the above should cover all the options...
-        if (result == null) {
-            throw new IllegalStateException("resolveDomainAxisLocation()");
-        }
-        return result;
+        return resolveDomainRange(location, orientation, RectangleEdge.RIGHT, RectangleEdge.TOP,
+						RectangleEdge.LEFT, RectangleEdge.TOP, RectangleEdge.RIGHT, RectangleEdge.BOTTOM,
+						RectangleEdge.LEFT, RectangleEdge.BOTTOM, "resolveDomainAxisLocation()");
 
     }
 
@@ -1492,49 +1454,47 @@ public abstract class Plot implements AxisChangeListener,
     public static RectangleEdge resolveRangeAxisLocation(
             AxisLocation location, PlotOrientation orientation) {
 
-        ParamChecks.nullNotPermitted(location, "location");
-        ParamChecks.nullNotPermitted(orientation, "orientation");
-
-        RectangleEdge result = null;
-        if (location == AxisLocation.TOP_OR_RIGHT) {
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                result = RectangleEdge.TOP;
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                result = RectangleEdge.RIGHT;
-            }
-        }
-        else if (location == AxisLocation.TOP_OR_LEFT) {
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                result = RectangleEdge.TOP;
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                result = RectangleEdge.LEFT;
-            }
-        }
-        else if (location == AxisLocation.BOTTOM_OR_RIGHT) {
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                result = RectangleEdge.BOTTOM;
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                result = RectangleEdge.RIGHT;
-            }
-        }
-        else if (location == AxisLocation.BOTTOM_OR_LEFT) {
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                result = RectangleEdge.BOTTOM;
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                result = RectangleEdge.LEFT;
-            }
-        }
-
-        // the above should cover all the options...
-        if (result == null) {
-            throw new IllegalStateException("resolveRangeAxisLocation()");
-        }
-        return result;
+        return resolveDomainRange(location, orientation, RectangleEdge.TOP, RectangleEdge.RIGHT,
+						RectangleEdge.TOP, RectangleEdge.LEFT, RectangleEdge.BOTTOM, RectangleEdge.RIGHT,
+						RectangleEdge.BOTTOM, RectangleEdge.LEFT, "resolveRangeAxisLocation()");
 
     }
+
+	private static RectangleEdge resolveDomainRange(AxisLocation location, PlotOrientation orientation,
+			RectangleEdge arg0, RectangleEdge arg1, RectangleEdge arg2, RectangleEdge arg3, RectangleEdge arg4,
+			RectangleEdge arg5, RectangleEdge arg6, RectangleEdge arg7, String arg8) throws IllegalStateException {
+		ParamChecks.nullNotPermitted(location, "location");
+		ParamChecks.nullNotPermitted(orientation, "orientation");
+		RectangleEdge result = null;
+		if (location == AxisLocation.TOP_OR_RIGHT) {
+			if (orientation == PlotOrientation.HORIZONTAL) {
+				result = arg0;
+			} else if (orientation == PlotOrientation.VERTICAL) {
+				result = arg1;
+			}
+		} else if (location == AxisLocation.TOP_OR_LEFT) {
+			if (orientation == PlotOrientation.HORIZONTAL) {
+				result = arg2;
+			} else if (orientation == PlotOrientation.VERTICAL) {
+				result = arg3;
+			}
+		} else if (location == AxisLocation.BOTTOM_OR_RIGHT) {
+			if (orientation == PlotOrientation.HORIZONTAL) {
+				result = arg4;
+			} else if (orientation == PlotOrientation.VERTICAL) {
+				result = arg5;
+			}
+		} else if (location == AxisLocation.BOTTOM_OR_LEFT) {
+			if (orientation == PlotOrientation.HORIZONTAL) {
+				result = arg6;
+			} else if (orientation == PlotOrientation.VERTICAL) {
+				result = arg7;
+			}
+		}
+		if (result == null) {
+			throw new IllegalStateException(arg8);
+		}
+		return result;
+	}
 
 }
