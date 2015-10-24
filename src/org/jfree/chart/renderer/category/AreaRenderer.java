@@ -104,7 +104,7 @@ import org.jfree.util.PublicCloneable;
  * <img src="../../../../../images/AreaRendererSample.png"
  * alt="AreaRendererSample.png" />
  */
-public class AreaRenderer extends AbstractCategoryItemRenderer
+public class AreaRenderer extends IntermediateAbstractCategoryItemRenderer
         implements Cloneable, PublicCloneable, Serializable {
 
     /** For serialization. */
@@ -159,48 +159,7 @@ public class AreaRenderer extends AbstractCategoryItemRenderer
     @Override
     public LegendItem getLegendItem(int datasetIndex, int series) {
 
-        // if there is no plot, there is no dataset to access...
-        CategoryPlot cp = getPlot();
-        if (cp == null) {
-            return null;
-        }
-
-        // check that a legend item needs to be displayed...
-        if (!isSeriesVisible(series) || !isSeriesVisibleInLegend(series)) {
-            return null;
-        }
-
-        CategoryDataset dataset = cp.getDataset(datasetIndex);
-        String label = getLegendItemLabelGenerator().generateLabel(dataset,
-                series);
-        String description = label;
-        String toolTipText = null;
-        if (getLegendItemToolTipGenerator() != null) {
-            toolTipText = getLegendItemToolTipGenerator().generateLabel(
-                    dataset, series);
-        }
-        String urlText = null;
-        if (getLegendItemURLGenerator() != null) {
-            urlText = getLegendItemURLGenerator().generateLabel(dataset,
-                    series);
-        }
-        Shape shape = lookupLegendShape(series);
-        Paint paint = lookupSeriesPaint(series);
-        Paint outlinePaint = lookupSeriesOutlinePaint(series);
-        Stroke outlineStroke = lookupSeriesOutlineStroke(series);
-
-        LegendItem result = new LegendItem(label, description, toolTipText,
-                urlText, shape, paint, outlineStroke, outlinePaint);
-        result.setLabelFont(lookupLegendTextFont(series));
-        Paint labelPaint = lookupLegendTextPaint(series);
-        if (labelPaint != null) {
-            result.setLabelPaint(labelPaint);
-        }
-        result.setDataset(dataset);
-        result.setDatasetIndex(datasetIndex);
-        result.setSeriesKey(dataset.getRowKey(series));
-        result.setSeriesIndex(series);
-        return result;
+        return getLegendItemExtracted(series, datasetIndex);
 
     }
 
