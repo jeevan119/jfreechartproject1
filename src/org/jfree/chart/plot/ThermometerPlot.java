@@ -150,7 +150,7 @@ import org.jfree.util.UnitType;
  * <li>settable display location for the value text.</li>
  * </ol>
  */
-public class ThermometerPlot extends Plot implements ValueAxisPlot,
+public class ThermometerPlot extends IntermediatePlot implements ValueAxisPlot,
         Zoomable, Cloneable, Serializable {
 
     /** For serialization. */
@@ -276,9 +276,6 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot,
      * @since 1.0.7
      */
     protected static final int DEFAULT_GAP = 5;
-
-    /** The dataset for the plot. */
-    private ValueDataset dataset;
 
     /** The range axis. */
     private ValueAxis rangeAxis;
@@ -437,23 +434,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot,
      */
     public void setDataset(ValueDataset dataset) {
 
-        // if there is an existing dataset, remove the plot from the list
-        // of change listeners...
-        ValueDataset existing = this.dataset;
-        if (existing != null) {
-            existing.removeChangeListener(this);
-        }
-
-        // set the new dataset, and register the chart as a change listener...
-        this.dataset = dataset;
-        if (dataset != null) {
-            setDatasetGroup(dataset.getGroup());
-            dataset.addChangeListener(this);
-        }
-
-        // send a dataset change event to self...
-        DatasetChangeEvent event = new DatasetChangeEvent(this, dataset);
-        datasetChanged(event);
+        setDatasetExtracted(dataset);
 
     }
 

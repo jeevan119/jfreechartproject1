@@ -133,7 +133,7 @@ import org.jfree.util.PaintUtilities;
  * Defined ranges (for example, 'normal', 'warning' and 'critical') can be
  * highlighted on the dial.
  */
-public class MeterPlot extends Plot implements Serializable, Cloneable {
+public class MeterPlot extends IntermediatePlot implements Serializable, Cloneable {
 
     /** For serialization. */
     private static final long serialVersionUID = 2987472457734470962L;
@@ -162,9 +162,6 @@ public class MeterPlot extends Plot implements Serializable, Cloneable {
     /** The default label font. */
     public static final Font DEFAULT_LABEL_FONT = new Font("SansSerif",
             Font.BOLD, 10);
-
-    /** The dataset (contains a single value). */
-    private ValueDataset dataset;
 
     /** The dial shape (background shape). */
     private DialShape shape;
@@ -695,23 +692,7 @@ public class MeterPlot extends Plot implements Serializable, Cloneable {
      */
     public void setDataset(ValueDataset dataset) {
 
-        // if there is an existing dataset, remove the plot from the list of
-        // change listeners...
-        ValueDataset existing = this.dataset;
-        if (existing != null) {
-            existing.removeChangeListener(this);
-        }
-
-        // set the new dataset, and register the chart as a change listener...
-        this.dataset = dataset;
-        if (dataset != null) {
-            setDatasetGroup(dataset.getGroup());
-            dataset.addChangeListener(this);
-        }
-
-        // send a dataset change event to self...
-        DatasetChangeEvent event = new DatasetChangeEvent(this, dataset);
-        datasetChanged(event);
+        setDatasetExtracted(dataset);
 
     }
 

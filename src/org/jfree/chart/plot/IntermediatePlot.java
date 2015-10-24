@@ -2,6 +2,8 @@ package org.jfree.chart.plot;
 
 
 import java.util.Map;
+import org.jfree.data.general.DatasetChangeEvent;
+import org.jfree.data.general.ValueDataset;
 import org.jfree.ui.Layer;
 import java.util.Collection;
 import java.util.ArrayList;
@@ -33,5 +35,24 @@ public abstract class IntermediatePlot extends Plot {
 		if (notify) {
 			fireChangeEvent();
 		}
+	}
+
+	/**
+	 * The dataset (contains a single value). 
+	 */
+	protected ValueDataset dataset;
+
+	protected void setDatasetExtracted(ValueDataset dataset) {
+		ValueDataset existing = this.dataset;
+		if (existing != null) {
+			existing.removeChangeListener(this);
+		}
+		this.dataset = dataset;
+		if (dataset != null) {
+			setDatasetGroup(dataset.getGroup());
+			dataset.addChangeListener(this);
+		}
+		DatasetChangeEvent event = new DatasetChangeEvent(this, dataset);
+		datasetChanged(event);
 	}
 }
