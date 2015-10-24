@@ -117,9 +117,6 @@ public class LineRenderer3D extends LineAndShapeRenderer
     /** The size of y-offset for the 3D effect. */
     private double yOffset;
 
-    /** The paint used to shade the left and lower 3D wall. */
-    private transient Paint wallPaint;
-
     /**
      * Creates a new renderer.
      */
@@ -183,18 +180,6 @@ public class LineRenderer3D extends LineAndShapeRenderer
     }
 
     /**
-     * Returns the paint used to highlight the left and bottom wall in the plot
-     * background.
-     *
-     * @return The paint.
-     *
-     * @see #setWallPaint(Paint)
-     */
-    public Paint getWallPaint() {
-        return this.wallPaint;
-    }
-
-    /**
      * Sets the paint used to highlight the left and bottom walls in the plot
      * background, and sends a {@link RendererChangeEvent} to all
      * registered listeners.
@@ -220,74 +205,7 @@ public class LineRenderer3D extends LineAndShapeRenderer
     public void drawBackground(Graphics2D g2, CategoryPlot plot,
                                Rectangle2D dataArea) {
 
-        float x0 = (float) dataArea.getX();
-        float x1 = x0 + (float) Math.abs(this.xOffset);
-        float x3 = (float) dataArea.getMaxX();
-        float x2 = x3 - (float) Math.abs(this.xOffset);
-
-        float y0 = (float) dataArea.getMaxY();
-        float y1 = y0 - (float) Math.abs(this.yOffset);
-        float y3 = (float) dataArea.getMinY();
-        float y2 = y3 + (float) Math.abs(this.yOffset);
-
-        GeneralPath clip = new GeneralPath();
-        clip.moveTo(x0, y0);
-        clip.lineTo(x0, y2);
-        clip.lineTo(x1, y3);
-        clip.lineTo(x3, y3);
-        clip.lineTo(x3, y1);
-        clip.lineTo(x2, y0);
-        clip.closePath();
-
-        Composite originalComposite = g2.getComposite();
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                plot.getBackgroundAlpha()));
-
-        // fill background...
-        Paint backgroundPaint = plot.getBackgroundPaint();
-        if (backgroundPaint != null) {
-            g2.setPaint(backgroundPaint);
-            g2.fill(clip);
-        }
-
-        GeneralPath leftWall = new GeneralPath();
-        leftWall.moveTo(x0, y0);
-        leftWall.lineTo(x0, y2);
-        leftWall.lineTo(x1, y3);
-        leftWall.lineTo(x1, y1);
-        leftWall.closePath();
-        g2.setPaint(getWallPaint());
-        g2.fill(leftWall);
-
-        GeneralPath bottomWall = new GeneralPath();
-        bottomWall.moveTo(x0, y0);
-        bottomWall.lineTo(x1, y1);
-        bottomWall.lineTo(x3, y1);
-        bottomWall.lineTo(x2, y0);
-        bottomWall.closePath();
-        g2.setPaint(getWallPaint());
-        g2.fill(bottomWall);
-
-        // higlight the background corners...
-        g2.setPaint(Color.lightGray);
-        Line2D corner = new Line2D.Double(x0, y0, x1, y1);
-        g2.draw(corner);
-        corner.setLine(x1, y1, x1, y3);
-        g2.draw(corner);
-        corner.setLine(x1, y1, x3, y1);
-        g2.draw(corner);
-
-        // draw background image, if there is one...
-        Image backgroundImage = plot.getBackgroundImage();
-        if (backgroundImage != null) {
-            Rectangle2D adjusted = new Rectangle2D.Double(dataArea.getX()
-                    + getXOffset(), dataArea.getY(),
-                    dataArea.getWidth() - getXOffset(),
-                    dataArea.getHeight() - getYOffset());
-            plot.drawBackgroundImage(g2, adjusted);
-        }
-
-        g2.setComposite(originalComposite);
+        drawBackgroundExtracted(dataArea, g2, plot, xOffset, yOffset);
 
     }
 
