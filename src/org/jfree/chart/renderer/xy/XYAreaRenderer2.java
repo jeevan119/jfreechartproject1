@@ -119,7 +119,7 @@ import org.jfree.util.ShapeUtilities;
  * <img src="../../../../../images/XYAreaRenderer2Sample.png"
  * alt="XYAreaRenderer2Sample.png" />
  */
-public class XYAreaRenderer2 extends AbstractXYItemRenderer
+public class XYAreaRenderer2 extends IntermediateAbstractXYItemRenderer
         implements XYItemRenderer, PublicCloneable {
 
     /** For serialization. */
@@ -127,12 +127,6 @@ public class XYAreaRenderer2 extends AbstractXYItemRenderer
 
     /** A flag that controls whether or not the outline is shown. */
     private boolean showOutline;
-
-    /**
-     * The shape used to represent an area in each legend item (this should
-     * never be <code>null</code>).
-     */
-    private transient Shape legendArea;
 
     /**
      * Constructs a new renderer.
@@ -239,39 +233,7 @@ public class XYAreaRenderer2 extends AbstractXYItemRenderer
      */
     @Override
     public LegendItem getLegendItem(int datasetIndex, int series) {
-        LegendItem result = null;
-        XYPlot xyplot = getPlot();
-        if (xyplot != null) {
-            XYDataset dataset = xyplot.getDataset(datasetIndex);
-            if (dataset != null) {
-                XYSeriesLabelGenerator lg = getLegendItemLabelGenerator();
-                String label = lg.generateLabel(dataset, series);
-                String description = label;
-                String toolTipText = null;
-                if (getLegendItemToolTipGenerator() != null) {
-                    toolTipText = getLegendItemToolTipGenerator().generateLabel(
-                            dataset, series);
-                }
-                String urlText = null;
-                if (getLegendItemURLGenerator() != null) {
-                    urlText = getLegendItemURLGenerator().generateLabel(
-                            dataset, series);
-                }
-                Paint paint = lookupSeriesPaint(series);
-                result = new LegendItem(label, description, toolTipText,
-                        urlText, this.legendArea, paint);
-                result.setLabelFont(lookupLegendTextFont(series));
-                Paint labelPaint = lookupLegendTextPaint(series);
-                if (labelPaint != null) {
-                    result.setLabelPaint(labelPaint);
-                }
-                result.setDataset(dataset);
-                result.setDatasetIndex(datasetIndex);
-                result.setSeriesKey(dataset.getSeriesKey(series));
-                result.setSeriesIndex(series);
-            }
-        }
-        return result;
+        return getLegendItemExtracted(datasetIndex, series);
     }
 
     /**
