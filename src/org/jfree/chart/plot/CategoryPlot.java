@@ -5145,4 +5145,20 @@ public class CategoryPlot extends IntermediatePlot implements ValueAxisPlot, Pan
 
     }
 
+	protected LegendItemCollection getLegendItemsExtracted(List thisSubplots) {
+		LegendItemCollection result = getFixedLegendItems();
+		if (result == null) {
+			result = new LegendItemCollection();
+			if (thisSubplots != null) {
+				Iterator iterator = thisSubplots.iterator();
+				while (iterator.hasNext()) {
+					CategoryPlot plot = (CategoryPlot) iterator.next();
+					LegendItemCollection more = plot.getLegendItems();
+					result.addAll(more);
+				}
+			}
+		}
+		return result;
+	}
+
 }
