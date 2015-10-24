@@ -260,7 +260,7 @@ import org.jfree.util.SortOrder;
  * A general plotting class that uses data from a {@link CategoryDataset} and
  * renders each data item using a {@link CategoryItemRenderer}.
  */
-public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
+public class CategoryPlot extends IntermediatePlot implements ValueAxisPlot, Pannable,
         Zoomable, AnnotationChangeListener, RendererChangeListener,
         Cloneable, PublicCloneable, Serializable {
 
@@ -2675,29 +2675,7 @@ public class CategoryPlot extends Plot implements ValueAxisPlot, Pannable,
      */
     public void addRangeMarker(int index, Marker marker, Layer layer,
             boolean notify) {
-        Collection markers;
-        if (layer == Layer.FOREGROUND) {
-            markers = (Collection) this.foregroundRangeMarkers.get(
-                    new Integer(index));
-            if (markers == null) {
-                markers = new java.util.ArrayList();
-                this.foregroundRangeMarkers.put(new Integer(index), markers);
-            }
-            markers.add(marker);
-        }
-        else if (layer == Layer.BACKGROUND) {
-            markers = (Collection) this.backgroundRangeMarkers.get(
-                    new Integer(index));
-            if (markers == null) {
-                markers = new java.util.ArrayList();
-                this.backgroundRangeMarkers.put(new Integer(index), markers);
-            }
-            markers.add(marker);
-        }
-        marker.addChangeListener(this);
-        if (notify) {
-            fireChangeEvent();
-        }
+        addRangeMarkerExtracted(layer, index, marker, notify, foregroundRangeMarkers, backgroundRangeMarkers);
     }
 
     /**
