@@ -56,6 +56,7 @@ import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.general.AbstractDataset;
 import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.general.DatasetChangeListener;
+import org.jfree.data.general.IntermediateAbstractDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.TableOrder;
 
@@ -63,7 +64,7 @@ import org.jfree.util.TableOrder;
  * A {@link PieDataset} implementation that obtains its data from one row or
  * column of a {@link CategoryDataset}.
  */
-public class CategoryToPieDataset extends AbstractDataset
+public class CategoryToPieDataset extends IntermediateAbstractDataset
         implements PieDataset, DatasetChangeListener {
 
     /** For serialization. */
@@ -300,38 +301,7 @@ public class CategoryToPieDataset extends AbstractDataset
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof PieDataset)) {
-            return false;
-        }
-        PieDataset that = (PieDataset) obj;
-        int count = getItemCount();
-        if (that.getItemCount() != count) {
-            return false;
-        }
-        for (int i = 0; i < count; i++) {
-            Comparable k1 = getKey(i);
-            Comparable k2 = that.getKey(i);
-            if (!k1.equals(k2)) {
-                return false;
-            }
-
-            Number v1 = getValue(i);
-            Number v2 = that.getValue(i);
-            if (v1 == null) {
-                if (v2 != null) {
-                    return false;
-                }
-            }
-            else {
-                if (!v1.equals(v2)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return equalsExtracted(obj);
     }
 
 }
