@@ -89,7 +89,7 @@ import org.jfree.util.PublicCloneable;
  * Represents a collection of {@link XYSeries} objects that can be used as a
  * dataset.
  */
-public class XYSeriesCollection extends AbstractIntervalXYDataset
+public class XYSeriesCollection extends IntermediateAbstractIntervalXYDataset
         implements IntervalXYDataset, DomainInfo, RangeInfo, 
         VetoableChangeListener, PublicCloneable, Serializable {
 
@@ -738,23 +738,7 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
     @Override
     public void vetoableChange(PropertyChangeEvent e)
             throws PropertyVetoException {
-        // if it is not the series name, then we have no interest
-        if (!"Key".equals(e.getPropertyName())) {
-            return;
-        }
-        
-        // to be defensive, let's check that the source series does in fact
-        // belong to this collection
-        Series s = (Series) e.getSource();
-        if (getSeriesIndex(s.getKey()) == -1) {
-            throw new IllegalStateException("Receiving events from a series " +
-                    "that does not belong to this collection.");
-        }
-        // check if the new series name already exists for another series
-        Comparable key = (Comparable) e.getNewValue();
-        if (getSeriesIndex(key) >= 0) {
-            throw new PropertyVetoException("Duplicate key2", e);
-        }
+        vetoableChangeExtracted(e);
     }
 
 }

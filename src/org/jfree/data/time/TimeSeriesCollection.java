@@ -106,6 +106,7 @@ import org.jfree.data.Range;
 import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.general.Series;
 import org.jfree.data.xy.AbstractIntervalXYDataset;
+import org.jfree.data.xy.IntermediateAbstractIntervalXYDataset;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYDomainInfo;
@@ -118,7 +119,7 @@ import org.jfree.util.ObjectUtilities;
  * {@link IntervalXYDataset} interface.  This makes it a convenient dataset for
  * use with the {@link org.jfree.chart.plot.XYPlot} class.
  */
-public class TimeSeriesCollection extends AbstractIntervalXYDataset
+public class TimeSeriesCollection extends IntermediateAbstractIntervalXYDataset
         implements XYDataset, IntervalXYDataset, DomainInfo, XYDomainInfo,
         XYRangeInfo, VetoableChangeListener, Serializable {
 
@@ -756,23 +757,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
     @Override
     public void vetoableChange(PropertyChangeEvent e)
             throws PropertyVetoException {
-        // if it is not the series name, then we have no interest
-        if (!"Key".equals(e.getPropertyName())) {
-            return;
-        }
-        
-        // to be defensive, let's check that the source series does in fact
-        // belong to this collection
-        Series s = (Series) e.getSource();
-        if (getSeriesIndex(s.getKey()) == -1) {
-            throw new IllegalStateException("Receiving events from a series " +
-                    "that does not belong to this collection.");
-        }
-        // check if the new series name already exists for another series
-        Comparable key = (Comparable) e.getNewValue();
-        if (getSeriesIndex(key) >= 0) {
-            throw new PropertyVetoException("Duplicate key2", e);
-        }
+        vetoableChangeExtracted(e);
     }
 
     /**
