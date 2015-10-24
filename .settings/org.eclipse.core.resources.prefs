@@ -5,4 +5,5 @@ encoding//src/org/jfree/chart/plot/IntermediatePlot.java=Cp1252
 encoding//src/org/jfree/chart/renderer/category/IntermediateAbstractCategoryItemRenderer.java=Cp1252
 encoding//src/org/jfree/chart/renderer/category/IntermediateBarPainter.java=Cp1252
 encoding//src/org/jfree/chart/renderer/xy/IntermediateAbstractXYItemRenderer.java=Cp1252
+encoding//src/org/jfree/chart/renderer/xy/IntermediateXYBarPainter.java=Cp1252
 encoding//src/org/jfree/data/general/IntermediateAbstractDataset.java=Cp1252
