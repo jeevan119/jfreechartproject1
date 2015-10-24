@@ -55,6 +55,7 @@ import org.jfree.chart.HashUtilities;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.DataUtilities;
 import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.IntervalCategoryDataset;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.util.PublicCloneable;
 
@@ -321,5 +322,30 @@ public abstract class AbstractCategoryItemLabelGenerator
         }
         return clone;
     }
+
+	protected Object[] createItemArrayExtracted(CategoryDataset dataset, int row, int column) {
+		Object[] result = new Object[5];
+		result[0] = dataset.getRowKey(row).toString();
+		result[1] = dataset.getColumnKey(column).toString();
+		Number value = dataset.getValue(row, column);
+		if (getNumberFormat() != null) {
+			result[2] = getNumberFormat().format(value);
+		} else if (getDateFormat() != null) {
+			result[2] = getDateFormat().format(value);
+		}
+		if (dataset instanceof IntervalCategoryDataset) {
+			IntervalCategoryDataset icd = (IntervalCategoryDataset) dataset;
+			Number start = icd.getStartValue(row, column);
+			Number end = icd.getEndValue(row, column);
+			if (getNumberFormat() != null) {
+				result[3] = getNumberFormat().format(start);
+				result[4] = getNumberFormat().format(end);
+			} else if (getDateFormat() != null) {
+				result[3] = getDateFormat().format(start);
+				result[4] = getDateFormat().format(end);
+			}
+		}
+		return result;
+	}
 
 }
