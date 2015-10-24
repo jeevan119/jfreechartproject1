@@ -64,6 +64,7 @@ import java.util.Date;
 import org.jfree.chart.HashUtilities;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYZDataset;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -368,5 +369,32 @@ public class AbstractXYItemLabelGenerator implements Cloneable, Serializable {
         }
         return clone;
     }
+
+	protected Object[] createItemArrayExtracted(XYZDataset dataset, int series, int item, DateFormat thisZDateFormat,
+			NumberFormat thisZFormat) {
+		Object[] result = new Object[4];
+		result[0] = dataset.getSeriesKey(series).toString();
+		Number x = dataset.getX(series, item);
+		DateFormat xf = getXDateFormat();
+		if (xf != null) {
+			result[1] = xf.format(x);
+		} else {
+			result[1] = getXFormat().format(x);
+		}
+		Number y = dataset.getY(series, item);
+		DateFormat yf = getYDateFormat();
+		if (yf != null) {
+			result[2] = yf.format(y);
+		} else {
+			result[2] = getYFormat().format(y);
+		}
+		Number z = dataset.getZ(series, item);
+		if (thisZDateFormat != null) {
+			result[3] = thisZDateFormat.format(z);
+		} else {
+			result[3] = thisZFormat.format(z);
+		}
+		return result;
+	}
 
 }
