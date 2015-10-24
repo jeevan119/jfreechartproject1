@@ -1927,4 +1927,31 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		g2.setComposite(originalComposite);
 	}
 
+	protected void drawOutlineExtracted(Rectangle2D dataArea, CategoryPlot plot, Graphics2D g2, double thisXOffset,
+			double thisYOffset) {
+		float x0 = (float) dataArea.getX();
+		float x1 = x0 + (float) Math.abs(thisXOffset);
+		float x3 = (float) dataArea.getMaxX();
+		float x2 = x3 - (float) Math.abs(thisXOffset);
+		float y0 = (float) dataArea.getMaxY();
+		float y1 = y0 - (float) Math.abs(thisYOffset);
+		float y3 = (float) dataArea.getMinY();
+		float y2 = y3 + (float) Math.abs(thisYOffset);
+		GeneralPath clip = new GeneralPath();
+		clip.moveTo(x0, y0);
+		clip.lineTo(x0, y2);
+		clip.lineTo(x1, y3);
+		clip.lineTo(x3, y3);
+		clip.lineTo(x3, y1);
+		clip.lineTo(x2, y0);
+		clip.closePath();
+		Stroke outlineStroke = plot.getOutlineStroke();
+		Paint outlinePaint = plot.getOutlinePaint();
+		if ((outlineStroke != null) && (outlinePaint != null)) {
+			g2.setStroke(outlineStroke);
+			g2.setPaint(outlinePaint);
+			g2.draw(clip);
+		}
+	}
+
 }
