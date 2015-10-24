@@ -60,7 +60,7 @@ import org.jfree.ui.RectangleEdge;
  *
  * @since 1.0.11
  */
-public class GradientBarPainter implements BarPainter, Serializable {
+public class GradientBarPainter extends IntermediateBarPainter implements BarPainter, Serializable {
 
     /** The division point between the first and second gradient regions. */
     private double g1;
@@ -209,73 +209,8 @@ public class GradientBarPainter implements BarPainter, Serializable {
             int column, RectangularShape bar, RectangleEdge base,
             boolean pegShadow) {
 
-        // handle a special case - if the bar colour has alpha == 0, it is
-        // invisible so we shouldn't draw any shadow
-        Paint itemPaint = renderer.getItemPaint(row, column);
-        if (itemPaint instanceof Color) {
-            Color c = (Color) itemPaint;
-            if (c.getAlpha() == 0) {
-                return;
-            }
-        }
+        paintBarShadowExtracted(renderer, row, column, bar, base, pegShadow, g2);
 
-        RectangularShape shadow = createShadow(bar, renderer.getShadowXOffset(),
-                renderer.getShadowYOffset(), base, pegShadow);
-        g2.setPaint(renderer.getShadowPaint());
-        g2.fill(shadow);
-
-    }
-
-    /**
-     * Creates a shadow for the bar.
-     *
-     * @param bar  the bar shape.
-     * @param xOffset  the x-offset for the shadow.
-     * @param yOffset  the y-offset for the shadow.
-     * @param base  the edge that is the base of the bar.
-     * @param pegShadow  peg the shadow to the base?
-     *
-     * @return A rectangle for the shadow.
-     */
-    private Rectangle2D createShadow(RectangularShape bar, double xOffset,
-            double yOffset, RectangleEdge base, boolean pegShadow) {
-        double x0 = bar.getMinX();
-        double x1 = bar.getMaxX();
-        double y0 = bar.getMinY();
-        double y1 = bar.getMaxY();
-        if (base == RectangleEdge.TOP) {
-            x0 += xOffset;
-            x1 += xOffset;
-            if (!pegShadow) {
-                y0 += yOffset;
-            }
-            y1 += yOffset;
-        }
-        else if (base == RectangleEdge.BOTTOM) {
-            x0 += xOffset;
-            x1 += xOffset;
-            y0 += yOffset;
-            if (!pegShadow) {
-                y1 += yOffset;
-            }
-        }
-        else if (base == RectangleEdge.LEFT) {
-            if (!pegShadow) {
-                x0 += xOffset;
-            }
-            x1 += xOffset;
-            y0 += yOffset;
-            y1 += yOffset;
-        }
-        else if (base == RectangleEdge.RIGHT) {
-            x0 += xOffset;
-            if (!pegShadow) {
-                x1 += xOffset;
-            }
-            y0 += yOffset;
-            y1 += yOffset;
-        }
-        return new Rectangle2D.Double(x0, y0, (x1 - x0), (y1 - y0));
     }
 
     /**
