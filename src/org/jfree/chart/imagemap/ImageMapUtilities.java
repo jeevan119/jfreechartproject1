@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.jfree.chart.ChartRenderingInfo;
+import org.jfree.chart.Utility;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.util.ParamChecks;
@@ -100,18 +101,7 @@ public class ImageMapUtilities {
             String name, ChartRenderingInfo info,
             boolean useOverLibForToolTips) throws IOException {
 
-        ToolTipTagFragmentGenerator toolTipTagFragmentGenerator;
-        if (useOverLibForToolTips) {
-            toolTipTagFragmentGenerator
-                    = new OverLIBToolTipTagFragmentGenerator();
-        }
-        else {
-            toolTipTagFragmentGenerator
-                    = new StandardToolTipTagFragmentGenerator();
-        }
-        ImageMapUtilities.writeImageMap(writer, name, info,
-                toolTipTagFragmentGenerator,
-                new StandardURLTagFragmentGenerator());
+        Utility.writeImageMapExtracted(useOverLibForToolTips, writer, name, info);
 
     }
 

@@ -648,18 +648,7 @@ public abstract class ChartUtilities {
             ChartRenderingInfo info, boolean useOverLibForToolTips)
             throws IOException {
 
-        ToolTipTagFragmentGenerator toolTipTagFragmentGenerator;
-        if (useOverLibForToolTips) {
-            toolTipTagFragmentGenerator
-                    = new OverLIBToolTipTagFragmentGenerator();
-        }
-        else {
-            toolTipTagFragmentGenerator
-                    = new StandardToolTipTagFragmentGenerator();
-        }
-        ImageMapUtilities.writeImageMap(writer, name, info,
-                toolTipTagFragmentGenerator,
-                new StandardURLTagFragmentGenerator());
+        Utility.writeImageMapExtracted(useOverLibForToolTips, writer, name, info);
 
     }
 
