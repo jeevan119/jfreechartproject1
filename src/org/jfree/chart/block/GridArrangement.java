@@ -240,17 +240,7 @@ public class GridArrangement implements Arrangement, Serializable {
     protected Size2D arrangeRF(BlockContainer container, Graphics2D g2,
                                RectangleConstraint constraint) {
 
-        RectangleConstraint c1 = constraint.toUnconstrainedWidth();
-        Size2D size1 = arrange(container, g2, c1);
-
-        if (constraint.getWidthRange().contains(size1.getWidth())) {
-            return size1;
-        }
-        else {
-            double w = constraint.getWidthRange().constrain(size1.getWidth());
-            RectangleConstraint c2 = constraint.toFixedWidth(w);
-            return arrange(container, g2, c2);
-        }
+        return arrangeRFNF(constraint, container, g2);
     }
 
     /**
@@ -265,17 +255,7 @@ public class GridArrangement implements Arrangement, Serializable {
     protected Size2D arrangeRN(BlockContainer container, Graphics2D g2,
                                RectangleConstraint constraint) {
 
-        RectangleConstraint c1 = constraint.toUnconstrainedWidth();
-        Size2D size1 = arrange(container, g2, c1);
-
-        if (constraint.getWidthRange().contains(size1.getWidth())) {
-            return size1;
-        }
-        else {
-            double w = constraint.getWidthRange().constrain(size1.getWidth());
-            RectangleConstraint c2 = constraint.toFixedWidth(w);
-            return arrange(container, g2, c2);
-        }
+        return arrangeRFNF(constraint, container, g2);
     }
 
     /**
@@ -449,5 +429,17 @@ public class GridArrangement implements Arrangement, Serializable {
         }
         return true;
     }
+
+	private Size2D arrangeRFNF(RectangleConstraint constraint, BlockContainer container, Graphics2D g2) {
+		RectangleConstraint c1 = constraint.toUnconstrainedWidth();
+		Size2D size1 = arrange(container, g2, c1);
+		if (constraint.getWidthRange().contains(size1.getWidth())) {
+			return size1;
+		} else {
+			double w = constraint.getWidthRange().constrain(size1.getWidth());
+			RectangleConstraint c2 = constraint.toFixedWidth(w);
+			return arrange(container, g2, c2);
+		}
+	}
 
 }
