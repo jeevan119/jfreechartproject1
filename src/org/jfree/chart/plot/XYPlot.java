@@ -5764,4 +5764,15 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable, Zoomable,
 
     }
 
+	protected XYPlot findSubplotExtracted(PlotRenderingInfo info, Point2D source, List thisSubplots) {
+		ParamChecks.nullNotPermitted(info, "info");
+		ParamChecks.nullNotPermitted(source, "source");
+		XYPlot result = null;
+		int subplotIndex = info.getSubplotIndex(source);
+		if (subplotIndex >= 0) {
+			result = (XYPlot) thisSubplots.get(subplotIndex);
+		}
+		return result;
+	}
+
 }

@@ -553,14 +553,7 @@ public class CombinedRangeXYPlot extends XYPlot
      * @return A subplot (possibly <code>null</code>).
      */
     public XYPlot findSubplot(PlotRenderingInfo info, Point2D source) {
-        ParamChecks.nullNotPermitted(info, "info");
-        ParamChecks.nullNotPermitted(source, "source");
-        XYPlot result = null;
-        int subplotIndex = info.getSubplotIndex(source);
-        if (subplotIndex >= 0) {
-            result =  (XYPlot) this.subplots.get(subplotIndex);
-        }
-        return result;
+        return findSubplotExtracted(info, source, subplots);
     }
 
     /**
