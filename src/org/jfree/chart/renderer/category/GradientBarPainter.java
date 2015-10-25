@@ -226,20 +226,7 @@ public class GradientBarPainter extends IntermediateBarPainter implements BarPai
      */
     private Rectangle2D[] splitVerticalBar(RectangularShape bar, double a,
             double b, double c) {
-        Rectangle2D[] result = new Rectangle2D[4];
-        double x0 = bar.getMinX();
-        double x1 = Math.rint(x0 + (bar.getWidth() * a));
-        double x2 = Math.rint(x0 + (bar.getWidth() * b));
-        double x3 = Math.rint(x0 + (bar.getWidth() * c));
-        result[0] = new Rectangle2D.Double(bar.getMinX(), bar.getMinY(),
-                x1 - x0, bar.getHeight());
-        result[1] = new Rectangle2D.Double(x1, bar.getMinY(), x2 - x1,
-                bar.getHeight());
-        result[2] = new Rectangle2D.Double(x2, bar.getMinY(), x3 - x2,
-                bar.getHeight());
-        result[3] = new Rectangle2D.Double(x3, bar.getMinY(),
-                bar.getMaxX() - x3, bar.getHeight());
-        return result;
+        return Utility.splitVerticalBarExtracted(bar, a, b, c);
     }
 
     /**
