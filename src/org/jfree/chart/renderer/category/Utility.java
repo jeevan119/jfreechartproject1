@@ -57,4 +57,17 @@ public class Utility {
 		result[3] = new Rectangle2D.Double(x3, bar.getMinY(), bar.getMaxX() - x3, bar.getHeight());
 		return result;
 	}
+
+	public static Rectangle2D[] splitHorizontalBarExtracted(RectangularShape bar, double a, double b, double c) {
+		Rectangle2D[] result = new Rectangle2D[4];
+		double y0 = bar.getMinY();
+		double y1 = Math.rint(y0 + (bar.getHeight() * a));
+		double y2 = Math.rint(y0 + (bar.getHeight() * b));
+		double y3 = Math.rint(y0 + (bar.getHeight() * c));
+		result[0] = new Rectangle2D.Double(bar.getMinX(), bar.getMinY(), bar.getWidth(), y1 - y0);
+		result[1] = new Rectangle2D.Double(bar.getMinX(), y1, bar.getWidth(), y2 - y1);
+		result[2] = new Rectangle2D.Double(bar.getMinX(), y2, bar.getWidth(), y3 - y2);
+		result[3] = new Rectangle2D.Double(bar.getMinX(), y3, bar.getWidth(), bar.getMaxY() - y3);
+		return result;
+	}
 }
