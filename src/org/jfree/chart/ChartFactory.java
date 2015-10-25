@@ -629,7 +629,13 @@ public abstract class ChartFactory {
         plot.setBackgroundPaint(null);
         plot.setOutlineStroke(null);
 
-        if (tooltips) {
+        return createMultiplePieChart3(title, legend, tooltips, urls, plot);
+
+    }
+
+	private static JFreeChart createMultiplePieChart3(String title, boolean legend, boolean tooltips, boolean urls,
+			MultiplePiePlot plot) {
+		if (tooltips) {
             PieToolTipGenerator tooltipGenerator
                 = new StandardPieToolTipGenerator();
             PiePlot pp = (PiePlot) plot.getPieChart().getPlot();
@@ -646,8 +652,7 @@ public abstract class ChartFactory {
                 plot, legend);
         currentTheme.apply(chart);
         return chart;
-
-    }
+	}
 
     /**
      * Creates a 3D pie chart using the specified dataset.  The chart object
@@ -762,23 +767,7 @@ public abstract class ChartFactory {
         pieChart.setBackgroundPaint(null);
         plot.setPieChart(pieChart);
 
-        if (tooltips) {
-            PieToolTipGenerator tooltipGenerator
-                = new StandardPieToolTipGenerator();
-            PiePlot pp = (PiePlot) plot.getPieChart().getPlot();
-            pp.setToolTipGenerator(tooltipGenerator);
-        }
-
-        if (urls) {
-            PieURLGenerator urlGenerator = new StandardPieURLGenerator();
-            PiePlot pp = (PiePlot) plot.getPieChart().getPlot();
-            pp.setURLGenerator(urlGenerator);
-        }
-
-        JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT,
-                plot, legend);
-        currentTheme.apply(chart);
-        return chart;
+        return createMultiplePieChart3(title, legend, tooltips, urls, plot);
 
     }
 

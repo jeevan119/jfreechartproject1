@@ -761,11 +761,10 @@ public class DateAxis extends ValueAxis implements Cloneable, Serializable {
             RectangleEdge edge) {
 
         value = this.timeline.toTimelineValue((long) value);
-
+        double result = 0.0;
         DateRange range = (DateRange) getRange();
         double axisMin = this.timeline.toTimelineValue(range.getLowerMillis());
         double axisMax = this.timeline.toTimelineValue(range.getUpperMillis());
-        double result = 0.0;
         if (RectangleEdge.isTopOrBottom(edge)) {
             double minX = area.getX();
             double maxX = area.getMaxX();
