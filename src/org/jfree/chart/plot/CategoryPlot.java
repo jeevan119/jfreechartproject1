@@ -3436,10 +3436,10 @@ public class CategoryPlot extends IntermediateIntermediatePlot implements ValueA
         else {
             // reserve space for the range axes (if any)...
             for (int i = 0; i < this.rangeAxes.size(); i++) {
-                Axis yAxis = (Axis) this.rangeAxes.get(i);
-                if (yAxis != null) {
+                Axis axis = (Axis) this.rangeAxes.get(i);
+                if (axis != null) {
                     RectangleEdge edge = getRangeAxisEdge(i);
-                    space = yAxis.reserveSpace(g2, this, plotArea, edge, space);
+                    space = axis.reserveSpace(g2, this, plotArea, edge, space);
                 }
             }
         }

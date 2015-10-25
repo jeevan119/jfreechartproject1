@@ -3064,7 +3064,8 @@ public class XYPlot extends IntermediateIntermediatePlot implements ValueAxisPlo
      * @return The required space.
      */
     protected AxisSpace calculateRangeAxisSpace(Graphics2D g2, 
-            Rectangle2D plotArea, AxisSpace space) {
+                                                Rectangle2D plotArea, 
+                                                AxisSpace space) {
 
         if (space == null) {
             space = new AxisSpace();
@@ -3086,7 +3087,7 @@ public class XYPlot extends IntermediateIntermediatePlot implements ValueAxisPlo
             }
         }
         else {
-            // reserve space for the range axes...
+            // reserve space for the range axes (if any)...
             for (int i = 0; i < this.rangeAxes.size(); i++) {
                 Axis axis = (Axis) this.rangeAxes.get(i);
                 if (axis != null) {

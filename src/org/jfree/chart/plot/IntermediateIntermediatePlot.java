@@ -31,4 +31,5 @@ public abstract class IntermediateIntermediatePlot extends IntermediatePlot {
 			}
 		}
 	}
+	
 }
