@@ -408,7 +408,14 @@ public abstract class ChartFactory {
             plot.setToolTipGenerator(new StandardPieToolTipGenerator(locale));
         }
 
-        List keys = dataset.getKeys();
+        return createPieChart1(title, dataset, previousDataset, percentDiffForMaxScale, greenForIncrease, legend,
+				subTitle, showDifference, plot);
+    }
+
+	private static JFreeChart createPieChart1(String title, PieDataset dataset, PieDataset previousDataset,
+			int percentDiffForMaxScale, boolean greenForIncrease, boolean legend, boolean subTitle,
+			boolean showDifference, PiePlot plot) {
+		List keys = dataset.getKeys();
         DefaultPieDataset series = null;
         if (showDifference) {
             series = new DefaultPieDataset();
@@ -473,7 +480,7 @@ public abstract class ChartFactory {
         }
         currentTheme.apply(chart);
         return chart;
-    }
+	}
 
     /**
      * Creates a pie chart with default settings that compares 2 datasets.
@@ -529,71 +536,8 @@ public abstract class ChartFactory {
             plot.setURLGenerator(new StandardPieURLGenerator());
         }
 
-        List keys = dataset.getKeys();
-        DefaultPieDataset series = null;
-        if (showDifference) {
-            series = new DefaultPieDataset();
-        }
-
-        double colorPerPercent = 255.0 / percentDiffForMaxScale;
-        for (Iterator it = keys.iterator(); it.hasNext();) {
-            Comparable key = (Comparable) it.next();
-            Number newValue = dataset.getValue(key);
-            Number oldValue = previousDataset.getValue(key);
-
-            if (oldValue == null) {
-                if (greenForIncrease) {
-                    plot.setSectionPaint(key, Color.green);
-                }
-                else {
-                    plot.setSectionPaint(key, Color.red);
-                }
-                if (showDifference) {
-                    assert series != null; // suppresses compiler warning
-                    series.setValue(key + " (+100%)", newValue);
-                }
-            }
-            else {
-                double percentChange = (newValue.doubleValue()
-                        / oldValue.doubleValue() - 1.0) * 100.0;
-                double shade
-                    = (Math.abs(percentChange) >= percentDiffForMaxScale ? 255
-                    : Math.abs(percentChange) * colorPerPercent);
-                if (greenForIncrease
-                        && newValue.doubleValue() > oldValue.doubleValue()
-                        || !greenForIncrease && newValue.doubleValue()
-                        < oldValue.doubleValue()) {
-                    plot.setSectionPaint(key, new Color(0, (int) shade, 0));
-                }
-                else {
-                    plot.setSectionPaint(key, new Color((int) shade, 0, 0));
-                }
-                if (showDifference) {
-                    assert series != null; // suppresses compiler warning
-                    series.setValue(key + " (" + (percentChange >= 0 ? "+" : "")
-                            + NumberFormat.getPercentInstance().format(
-                            percentChange / 100.0) + ")", newValue);
-                }
-            }
-        }
-
-        if (showDifference) {
-            plot.setDataset(series);
-        }
-
-        JFreeChart chart =  new JFreeChart(title,
-                JFreeChart.DEFAULT_TITLE_FONT, plot, legend);
-
-        if (subTitle) {
-            TextTitle subtitle = new TextTitle("Bright " + (greenForIncrease 
-                    ? "red" : "green") + "=change >=-" + percentDiffForMaxScale
-                    + "%, Bright " + (!greenForIncrease ? "red" : "green")
-                    + "=change >=+" + percentDiffForMaxScale + "%",
-                    new Font("SansSerif", Font.PLAIN, 10));
-            chart.addSubtitle(subtitle);
-        }
-        currentTheme.apply(chart);
-        return chart;
+        return createPieChart1(title, dataset, previousDataset, percentDiffForMaxScale, greenForIncrease, legend,
+				subTitle, showDifference, plot);
     }
 
     /**
