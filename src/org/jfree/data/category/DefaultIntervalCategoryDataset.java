@@ -516,7 +516,14 @@ public class DefaultIntervalCategoryDataset extends AbstractSeriesDataset
      */
     public void setStartValue(int series, Comparable category, Number value) {
 
-        // does the series exist?
+        int categoryIndex = setStartEndValue(series, category);
+        this.startData[series][categoryIndex] = value;
+        fireDatasetChanged();
+
+    }
+
+	private int setStartEndValue(int series, Comparable category) {
+		// does the series exist?
         if ((series < 0) || (series > getSeriesCount() - 1)) {
             throw new IllegalArgumentException(
                 "DefaultIntervalCategoryDataset.setValue: "
@@ -532,10 +539,8 @@ public class DefaultIntervalCategoryDataset extends AbstractSeriesDataset
         }
 
         // update the data...
-        this.startData[series][categoryIndex] = value;
-        fireDatasetChanged();
-
-    }
+		return categoryIndex;
+	}
 
     /**
      * Sets the end data value for one category in a series.
@@ -549,20 +554,7 @@ public class DefaultIntervalCategoryDataset extends AbstractSeriesDataset
      */
     public void setEndValue(int series, Comparable category, Number value) {
 
-        // does the series exist?
-        if ((series < 0) || (series > getSeriesCount() - 1)) {
-            throw new IllegalArgumentException(
-                "DefaultIntervalCategoryDataset.setValue: "
-                + "series outside valid range.");
-        }
-
-        // is the category valid?
-        int categoryIndex = getCategoryIndex(category);
-        if (categoryIndex < 0) {
-            throw new IllegalArgumentException(
-                "DefaultIntervalCategoryDataset.setValue: "
-                + "unrecognised category.");
-        }
+        int categoryIndex = setStartEndValue(series, category);
 
         // update the data...
         this.endData[series][categoryIndex] = value;
