@@ -473,47 +473,8 @@ public class TextTitle extends Title
      */
     @Override
     public Size2D arrange(Graphics2D g2, RectangleConstraint constraint) {
-        RectangleConstraint cc = toContentConstraint(constraint);
-        LengthConstraintType w = cc.getWidthConstraintType();
-        LengthConstraintType h = cc.getHeightConstraintType();
-        Size2D contentSize = null;
-        if (w == LengthConstraintType.NONE) {
-            if (h == LengthConstraintType.NONE) {
-                contentSize = arrangeNN(g2);
-            }
-            else if (h == LengthConstraintType.RANGE) {
-                throw new RuntimeException("Not yet implemented.");
-            }
-            else if (h == LengthConstraintType.FIXED) {
-                throw new RuntimeException("Not yet implemented.");
-            }
-        }
-        else if (w == LengthConstraintType.RANGE) {
-            if (h == LengthConstraintType.NONE) {
-                contentSize = arrangeRN(g2, cc.getWidthRange());
-            }
-            else if (h == LengthConstraintType.RANGE) {
-                contentSize = arrangeRR(g2, cc.getWidthRange(),
-                        cc.getHeightRange());
-            }
-            else if (h == LengthConstraintType.FIXED) {
-                throw new RuntimeException("Not yet implemented.");
-            }
-        }
-        else if (w == LengthConstraintType.FIXED) {
-            if (h == LengthConstraintType.NONE) {
-                contentSize = arrangeFN(g2, cc.getWidth());
-            }
-            else if (h == LengthConstraintType.RANGE) {
-                throw new RuntimeException("Not yet implemented.");
-            }
-            else if (h == LengthConstraintType.FIXED) {
-                throw new RuntimeException("Not yet implemented.");
-            }
-        }
-        assert contentSize != null; // suppress compiler warning
-        return new Size2D(calculateTotalWidth(contentSize.getWidth()),
-                calculateTotalHeight(contentSize.getHeight()));
+        Size2D contentSize = arrangeExtracted(constraint, g2);
+		return new Size2D(calculateTotalWidth(contentSize.getWidth()), calculateTotalHeight(contentSize.getHeight()));
     }
 
     /**
@@ -920,6 +881,40 @@ public class TextTitle extends Title
         this.paint = SerialUtilities.readPaint(stream);
         this.backgroundPaint = SerialUtilities.readPaint(stream);
     }
+
+	protected Size2D arrangeExtracted(RectangleConstraint constraint, Graphics2D g2) throws RuntimeException {
+		RectangleConstraint cc = toContentConstraint(constraint);
+		LengthConstraintType w = cc.getWidthConstraintType();
+		LengthConstraintType h = cc.getHeightConstraintType();
+		Size2D contentSize = null;
+		if (w == LengthConstraintType.NONE) {
+			if (h == LengthConstraintType.NONE) {
+				contentSize = arrangeNN(g2);
+			} else if (h == LengthConstraintType.RANGE) {
+				throw new RuntimeException("Not yet implemented.");
+			} else if (h == LengthConstraintType.FIXED) {
+				throw new RuntimeException("Not yet implemented.");
+			}
+		} else if (w == LengthConstraintType.RANGE) {
+			if (h == LengthConstraintType.NONE) {
+				contentSize = arrangeRN(g2, cc.getWidthRange());
+			} else if (h == LengthConstraintType.RANGE) {
+				contentSize = arrangeRR(g2, cc.getWidthRange(), cc.getHeightRange());
+			} else if (h == LengthConstraintType.FIXED) {
+				throw new RuntimeException("Not yet implemented.");
+			}
+		} else if (w == LengthConstraintType.FIXED) {
+			if (h == LengthConstraintType.NONE) {
+				contentSize = arrangeFN(g2, cc.getWidth());
+			} else if (h == LengthConstraintType.RANGE) {
+				throw new RuntimeException("Not yet implemented.");
+			} else if (h == LengthConstraintType.FIXED) {
+				throw new RuntimeException("Not yet implemented.");
+			}
+		}
+		assert contentSize != null;
+		return contentSize;
+	}
 
 }
 
