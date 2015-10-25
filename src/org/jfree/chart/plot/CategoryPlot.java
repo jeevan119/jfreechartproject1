@@ -260,7 +260,7 @@ import org.jfree.util.SortOrder;
  * A general plotting class that uses data from a {@link CategoryDataset} and
  * renders each data item using a {@link CategoryItemRenderer}.
  */
-public class CategoryPlot extends IntermediatePlot implements ValueAxisPlot, Pannable,
+public class CategoryPlot extends IntermediateIntermediatePlot implements ValueAxisPlot, Pannable,
         Zoomable, AnnotationChangeListener, RendererChangeListener,
         Cloneable, PublicCloneable, Serializable {
 
@@ -4690,26 +4690,7 @@ public class CategoryPlot extends IntermediatePlot implements ValueAxisPlot, Pan
     public void zoomRangeAxes(double factor, PlotRenderingInfo info,
                               Point2D source, boolean useAnchor) {
 
-        // perform the zoom on each range axis
-        for (int i = 0; i < this.rangeAxes.size(); i++) {
-            ValueAxis rangeAxis = (ValueAxis) this.rangeAxes.get(i);
-            if (rangeAxis != null) {
-                if (useAnchor) {
-                    // get the relevant source coordinate given the plot
-                    // orientation
-                    double sourceY = source.getY();
-                    if (this.orientation == PlotOrientation.HORIZONTAL) {
-                        sourceY = source.getX();
-                    }
-                    double anchorY = rangeAxis.java2DToValue(sourceY,
-                            info.getDataArea(), getRangeAxisEdge());
-                    rangeAxis.resizeRange2(factor, anchorY);
-                }
-                else {
-                    rangeAxis.resizeRange(factor);
-                }
-            }
-        }
+        zoomRangeAxesExtracted(useAnchor, source, info, factor, rangeAxes, orientation);
     }
 
     /**
