@@ -512,37 +512,7 @@ public class StackedBarRenderer3D extends BarRenderer3D
 
             Shape[] faces = createHorizontalBlock(barX0, barW, vv0, vv1,
                     inverted);
-            Paint fillPaint = getItemPaint(series, column);
-            Paint fillPaintDark = PaintAlpha.darker(fillPaint);
-            boolean drawOutlines = isDrawBarOutline();
-            Paint outlinePaint = fillPaint;
-            if (drawOutlines) {
-                outlinePaint = getItemOutlinePaint(series, column);
-                g2.setStroke(getItemOutlineStroke(series, column));
-            }
-            for (int f = 0; f < 6; f++) {
-                if (f == 5) {
-                    g2.setPaint(fillPaint);
-                }
-                else {
-                    g2.setPaint(fillPaintDark);
-                }
-                g2.fill(faces[f]);
-                if (drawOutlines) {
-                    g2.setPaint(outlinePaint);
-                    g2.draw(faces[f]);
-                }
-            }
-
-            itemLabelList.add(new Object[] {new Integer(series),
-                    faces[5].getBounds2D(),
-                    BooleanUtilities.valueOf(v0 < getBase())});
-
-            // add an item entity, if this information is being collected
-            EntityCollection entities = state.getEntityCollection();
-            if (entities != null) {
-                addItemEntity(entities, dataset, series, column, faces[5]);
-            }
+            drawStackHorizontalVertical(g2, state, dataset, column, itemLabelList, series, v0, faces);
 
         }
 
@@ -560,6 +530,41 @@ public class StackedBarRenderer3D extends BarRenderer3D
 
         }
     }
+
+	private void drawStackHorizontalVertical(Graphics2D g2, CategoryItemRendererState state, CategoryDataset dataset,
+			int column, List itemLabelList, int series, double v0, Shape[] faces) {
+		Paint fillPaint = getItemPaint(series, column);
+		Paint fillPaintDark = PaintAlpha.darker(fillPaint);
+		boolean drawOutlines = isDrawBarOutline();
+		Paint outlinePaint = fillPaint;
+		if (drawOutlines) {
+		    outlinePaint = getItemOutlinePaint(series, column);
+		    g2.setStroke(getItemOutlineStroke(series, column));
+		}
+		for (int f = 0; f < 6; f++) {
+		    if (f == 5) {
+		        g2.setPaint(fillPaint);
+		    }
+		    else {
+		        g2.setPaint(fillPaintDark);
+		    }
+		    g2.fill(faces[f]);
+		    if (drawOutlines) {
+		        g2.setPaint(outlinePaint);
+		        g2.draw(faces[f]);
+		    }
+		}
+
+		itemLabelList.add(new Object[] {new Integer(series),
+		        faces[5].getBounds2D(),
+		        BooleanUtilities.valueOf(v0 < getBase())});
+
+		// add an item entity, if this information is being collected
+		EntityCollection entities = state.getEntityCollection();
+		if (entities != null) {
+		    addItemEntity(entities, dataset, series, column, faces[5]);
+		}
+	}
 
     /**
      * Creates an array of shapes representing the six sides of a block in a
@@ -705,38 +710,7 @@ public class StackedBarRenderer3D extends BarRenderer3D
 
             Shape[] faces = createVerticalBlock(barX0, barW, vv0, vv1,
                     inverted);
-            Paint fillPaint = getItemPaint(series, column);
-            Paint fillPaintDark = PaintAlpha.darker(fillPaint);
-            boolean drawOutlines = isDrawBarOutline();
-            Paint outlinePaint = fillPaint;
-            if (drawOutlines) {
-                outlinePaint = getItemOutlinePaint(series, column);
-                g2.setStroke(getItemOutlineStroke(series, column));
-            }
-
-            for (int f = 0; f < 6; f++) {
-                if (f == 5) {
-                    g2.setPaint(fillPaint);
-                }
-                else {
-                    g2.setPaint(fillPaintDark);
-                }
-                g2.fill(faces[f]);
-                if (drawOutlines) {
-                    g2.setPaint(outlinePaint);
-                    g2.draw(faces[f]);
-                }
-            }
-
-            itemLabelList.add(new Object[] {new Integer(series),
-                    faces[5].getBounds2D(),
-                    BooleanUtilities.valueOf(v0 < getBase())});
-
-            // add an item entity, if this information is being collected
-            EntityCollection entities = state.getEntityCollection();
-            if (entities != null) {
-                addItemEntity(entities, dataset, series, column, faces[5]);
-            }
+            drawStackHorizontalVertical(g2, state, dataset, column, itemLabelList, series, v0, faces);
 
         }
 
