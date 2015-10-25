@@ -463,47 +463,14 @@ public class LogAxis extends IntermediateIntermediateValueAxis {
      */
     protected List refreshTicksHorizontal(Graphics2D g2, Rectangle2D dataArea,
             RectangleEdge edge) {
-
-        Range range = getRange();
-        List ticks = new ArrayList();
-        Font tickLabelFont = getTickLabelFont();
-        g2.setFont(tickLabelFont);
-        TextAnchor textAnchor;
+    	TextAnchor textAnchor;
         if (edge == RectangleEdge.TOP) {
             textAnchor = TextAnchor.BOTTOM_CENTER;
         }
         else {
             textAnchor = TextAnchor.TOP_CENTER;
         }
-
-        if (isAutoTickUnitSelection()) {
-            selectAutoTickUnit(g2, dataArea, edge);
-        }
-        int minorTickCount = this.tickUnit.getMinorTickCount();
-        double start = Math.floor(calculateLog(getLowerBound()));
-        double end = Math.ceil(calculateLog(getUpperBound()));
-        double current = start;
-        boolean hasTicks = (this.tickUnit.getSize() > 0.0)
-                           && !Double.isInfinite(start);
-        while (hasTicks && current <= end) {
-            double v = calculateValue(current);
-            if (range.contains(v)) {
-                ticks.add(new NumberTick(TickType.MAJOR, v, createTickLabel(v),
-                        textAnchor, TextAnchor.CENTER, 0.0));
-            }
-            // add minor ticks (for gridlines)
-            double next = Math.pow(this.base, current
-                    + this.tickUnit.getSize());
-            for (int i = 1; i < minorTickCount; i++) {
-                double minorV = v + i * ((next - v) / minorTickCount);
-                if (range.contains(minorV)) {
-                    ticks.add(new NumberTick(TickType.MINOR, minorV, "",
-                            textAnchor, TextAnchor.CENTER, 0.0));
-                }
-            }
-            current = current + this.tickUnit.getSize();
-        }
-        return ticks;
+        return refreshTicksHorizontalVertical(g2, dataArea, edge, textAnchor);
     }
 
     /**
@@ -517,19 +484,22 @@ public class LogAxis extends IntermediateIntermediateValueAxis {
      */
     protected List refreshTicksVertical(Graphics2D g2, Rectangle2D dataArea,
             RectangleEdge edge) {
-
-        Range range = getRange();
-        List ticks = new ArrayList();
-        Font tickLabelFont = getTickLabelFont();
-        g2.setFont(tickLabelFont);
-        TextAnchor textAnchor;
+    	TextAnchor textAnchor;
         if (edge == RectangleEdge.RIGHT) {
             textAnchor = TextAnchor.CENTER_LEFT;
         }
         else {
             textAnchor = TextAnchor.CENTER_RIGHT;
         }
+        return refreshTicksHorizontalVertical(g2, dataArea, edge, textAnchor);
+    }
 
+	private List refreshTicksHorizontalVertical(Graphics2D g2, Rectangle2D dataArea, RectangleEdge edge,
+			TextAnchor textAnchor) {
+		Range range = getRange();
+        List ticks = new ArrayList();
+        Font tickLabelFont = getTickLabelFont();
+        g2.setFont(tickLabelFont);
         if (isAutoTickUnitSelection()) {
             selectAutoTickUnit(g2, dataArea, edge);
         }
@@ -558,7 +528,7 @@ public class LogAxis extends IntermediateIntermediateValueAxis {
             current = current + this.tickUnit.getSize();
         }
         return ticks;
-    }
+	}
 
     /**
      * Selects an appropriate tick value for the axis.  The strategy is to
