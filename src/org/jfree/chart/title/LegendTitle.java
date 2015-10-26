@@ -75,6 +75,7 @@ import java.io.Serializable;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.LegendItemSource;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.block.Arrangement;
 import org.jfree.chart.block.Block;
 import org.jfree.chart.block.BlockContainer;
@@ -695,5 +696,16 @@ public class LegendTitle extends Title
         this.backgroundPaint = SerialUtilities.readPaint(stream);
         this.itemPaint = SerialUtilities.readPaint(stream);
     }
+
+	public void applyToTitle(StandardChartTheme standardChartTheme) {
+		if (this.getBackgroundPaint() != null) {
+			this.setBackgroundPaint(standardChartTheme.getLegendBackgroundPaint());
+		}
+		this.setItemFont(standardChartTheme.getRegularFont());
+		this.setItemPaint(standardChartTheme.getLegendItemPaint());
+		if (this.getWrapper() != null) {
+			standardChartTheme.applyToBlockContainer(this.getWrapper());
+		}
+	}
 
 }

@@ -53,7 +53,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.ValueAxis;
@@ -726,5 +726,13 @@ public class PaintScaleLegend extends Title implements AxisChangeListener,
         this.stripOutlinePaint = SerialUtilities.readPaint(stream);
         this.stripOutlineStroke = SerialUtilities.readStroke(stream);
     }
+
+	public void applyToTitle(StandardChartTheme standardChartTheme) {
+		this.setBackgroundPaint(standardChartTheme.getLegendBackgroundPaint());
+		ValueAxis axis = this.getAxis();
+		if (axis != null) {
+			standardChartTheme.applyToValueAxis(axis);
+		}
+	}
 
 }

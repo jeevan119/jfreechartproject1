@@ -1126,43 +1126,8 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param title  the title.
      */
-    protected void applyToTitle(Title title) {
-        if (title instanceof TextTitle) {
-            TextTitle tt = (TextTitle) title;
-            tt.setFont(this.largeFont);
-            tt.setPaint(this.subtitlePaint);
-        }
-        else if (title instanceof LegendTitle) {
-            LegendTitle lt = (LegendTitle) title;
-            if (lt.getBackgroundPaint() != null) {
-                lt.setBackgroundPaint(this.legendBackgroundPaint);
-            }
-            lt.setItemFont(this.regularFont);
-            lt.setItemPaint(this.legendItemPaint);
-            if (lt.getWrapper() != null) {
-                applyToBlockContainer(lt.getWrapper());
-            }
-        }
-        else if (title instanceof PaintScaleLegend) {
-            PaintScaleLegend psl = (PaintScaleLegend) title;
-            psl.setBackgroundPaint(this.legendBackgroundPaint);
-            ValueAxis axis = psl.getAxis();
-            if (axis != null) {
-                applyToValueAxis(axis);
-            }
-        }
-        else if (title instanceof CompositeTitle) {
-            CompositeTitle ct = (CompositeTitle) title;
-            BlockContainer bc = ct.getContainer();
-            List blocks = bc.getBlocks();
-            Iterator iterator = blocks.iterator();
-            while (iterator.hasNext()) {
-                Block b = (Block) iterator.next();
-                if (b instanceof Title) {
-                    applyToTitle((Title) b);
-                }
-            }
-        }
+    public void applyToTitle(Title title) {
+        title.applyToTitle(this);
     }
 
     /**
@@ -1170,7 +1135,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param bc  a block container (<code>null</code> not permitted).
      */
-    protected void applyToBlockContainer(BlockContainer bc) {
+    public void applyToBlockContainer(BlockContainer bc) {
         Iterator iterator = bc.getBlocks().iterator();
         while (iterator.hasNext()) {
             Block b = (Block) iterator.next();
@@ -1507,7 +1472,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param axis  the axis (<code>null</code> not permitted).
      */
-    protected void applyToValueAxis(ValueAxis axis) {
+    public void applyToValueAxis(ValueAxis axis) {
         axis.setLabelFont(this.largeFont);
         axis.setLabelPaint(this.axisLabelPaint);
         axis.setTickLabelFont(this.regularFont);

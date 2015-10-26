@@ -94,7 +94,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.block.BlockResult;
 import org.jfree.chart.block.EntityBlockParams;
 import org.jfree.chart.block.LengthConstraintType;
@@ -914,6 +914,11 @@ public class TextTitle extends Title
 		}
 		assert contentSize != null;
 		return contentSize;
+	}
+
+	public void applyToTitle(StandardChartTheme standardChartTheme) {
+		this.setFont(standardChartTheme.getLargeFont());
+		this.setPaint(standardChartTheme.getSubtitlePaint());
 	}
 
 }

@@ -61,7 +61,7 @@ package org.jfree.chart.title;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.block.RectangleConstraint;
 import org.jfree.chart.event.TitleChangeEvent;
 import org.jfree.ui.HorizontalAlignment;
@@ -364,5 +364,8 @@ public class ImageTitle extends Title {
         }
         return super.equals(obj);
     }
+
+	public void applyToTitle(StandardChartTheme standardChartTheme) {
+	}
 
 }

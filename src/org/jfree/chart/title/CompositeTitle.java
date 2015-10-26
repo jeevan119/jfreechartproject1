@@ -55,7 +55,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
+import java.util.Iterator;
+import java.util.List;
+import org.jfree.chart.StandardChartTheme;
+import org.jfree.chart.block.Block;
 import org.jfree.chart.block.BlockContainer;
 import org.jfree.chart.block.BorderArrangement;
 import org.jfree.chart.block.RectangleConstraint;
@@ -246,5 +249,17 @@ public class CompositeTitle extends Title implements Cloneable, Serializable {
         stream.defaultReadObject();
         this.backgroundPaint = SerialUtilities.readPaint(stream);
     }
+
+	public void applyToTitle(StandardChartTheme standardChartTheme) {
+		BlockContainer bc = this.getContainer();
+		List blocks = bc.getBlocks();
+		Iterator iterator = blocks.iterator();
+		while (iterator.hasNext()) {
+			Block b = (Block) iterator.next();
+			if (b instanceof Title) {
+				standardChartTheme.applyToTitle((Title) b);
+			}
+		}
+	}
 
 }

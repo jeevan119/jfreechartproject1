@@ -69,7 +69,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javax.swing.event.EventListenerList;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.block.AbstractBlock;
 import org.jfree.chart.block.Block;
 import org.jfree.chart.event.TitleChangeEvent;
@@ -458,5 +458,7 @@ public abstract class Title extends AbstractBlock
         stream.defaultReadObject();
         this.listenerList = new EventListenerList();
     }
+
+	public abstract void applyToTitle(StandardChartTheme standardChartTheme);
 
 }
