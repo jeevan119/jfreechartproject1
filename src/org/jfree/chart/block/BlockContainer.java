@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.entity.StandardEntityCollection;
 import org.jfree.chart.util.ParamChecks;
@@ -280,5 +280,8 @@ public class BlockContainer extends AbstractBlock
         // TODO : complete this
         return clone;
     }
+
+	public void applyToBlock(StandardChartTheme standardChartTheme) {
+	}
 
 }

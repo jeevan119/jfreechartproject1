@@ -92,6 +92,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.jfree.chart.ClipPath;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.ColorBar;
@@ -1860,6 +1861,12 @@ public class ContourPlot extends Plot implements ContourValuePlot,
     }
 
 	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void updatePlotProperties(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
 	}
 
 }

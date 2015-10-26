@@ -89,6 +89,7 @@ import java.util.TreeMap;
 
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.Axis;
 import org.jfree.chart.axis.AxisState;
 import org.jfree.chart.axis.NumberTick;
@@ -2232,6 +2233,13 @@ public class PolarPlot extends Plot implements ValueAxisPlot, Zoomable,
     }
 
 	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void updatePlotProperties(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
+		standardChartTheme.applyToPolarPlot(this);
 	}
 
 }

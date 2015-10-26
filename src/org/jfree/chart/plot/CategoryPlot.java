@@ -216,6 +216,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.annotations.Annotation;
 import org.jfree.chart.annotations.CategoryAnnotation;
 import org.jfree.chart.axis.Axis;
@@ -5152,6 +5153,17 @@ public class CategoryPlot extends IntermediateIntermediatePlot implements ValueA
 			defaultPlotEditor.setDrawLines(BooleanUtilities.valueOf(r.getBaseLinesVisible()));
 			defaultPlotEditor.setDrawShapes(BooleanUtilities.valueOf(r.getBaseShapesVisible()));
 		}
+	}
+
+	public void updatePlotProperties(DefaultPlotEditor defaultPlotEditor) {
+		CategoryItemRenderer r = this.getRenderer();
+		if (r instanceof LineAndShapeRenderer) {
+			((LineAndShapeRenderer) r).setLinesVisible(defaultPlotEditor.getDrawLines().booleanValue());
+		}
+	}
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
+		standardChartTheme.applyToCategoryPlot(this);
 	}
 
 }

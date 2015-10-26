@@ -603,22 +603,7 @@ public class DefaultPlotEditor extends JPanel implements ActionListener {
         }
 
         if (this.drawLines != null) {
-            if (plot instanceof CategoryPlot) {
-                CategoryPlot p = (CategoryPlot) plot;
-                CategoryItemRenderer r = p.getRenderer();
-                if (r instanceof LineAndShapeRenderer) {
-                    ((LineAndShapeRenderer) r).setLinesVisible(
-                            this.drawLines.booleanValue());
-                }
-            }
-            else if (plot instanceof XYPlot) {
-                XYPlot p = (XYPlot) plot;
-                XYItemRenderer r = p.getRenderer();
-                if (r instanceof StandardXYItemRenderer) {
-                    ((StandardXYItemRenderer) r).setPlotLines(
-                            this.drawLines.booleanValue());
-                }
-            }
+            plot.updatePlotProperties(this);
         }
 
         if (this.drawShapes != null) {
@@ -661,6 +646,10 @@ public class DefaultPlotEditor extends JPanel implements ActionListener {
 
 	public void setDrawShapes(Boolean drawShapes) {
 		this.drawShapes = drawShapes;
+	}
+
+	public Boolean getDrawLines() {
+		return drawLines;
 	}
 
 }

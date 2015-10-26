@@ -116,6 +116,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.event.PlotChangeEvent;
@@ -1797,5 +1798,9 @@ public class ThermometerPlot extends IntermediatePlot implements ValueAxisPlot,
     public boolean isRangeZoomable() {
         return true;
     }
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
+		standardChartTheme.applyToThermometerPlot(this);
+	}
 
 }

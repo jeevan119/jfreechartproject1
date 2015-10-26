@@ -57,6 +57,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.plot.Plot;
@@ -833,6 +834,12 @@ public class DialPlot extends Plot implements DialLayerChangeListener {
     }
 
 	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void updatePlotProperties(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
 	}
 
 

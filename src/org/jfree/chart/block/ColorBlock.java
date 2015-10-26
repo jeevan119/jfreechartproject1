@@ -52,6 +52,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.util.ParamChecks;
 
 import org.jfree.io.SerialUtilities;
@@ -187,5 +188,8 @@ public class ColorBlock extends AbstractBlock implements Block {
         stream.defaultReadObject();
         this.paint = SerialUtilities.readPaint(stream);
     }
+
+	public void applyToBlock(StandardChartTheme standardChartTheme) {
+	}
 
 }

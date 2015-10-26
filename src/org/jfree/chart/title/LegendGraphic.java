@@ -61,7 +61,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.block.AbstractBlock;
 import org.jfree.chart.block.Block;
 import org.jfree.chart.block.LengthConstraintType;
@@ -752,5 +752,8 @@ public class LegendGraphic extends AbstractBlock
         this.linePaint = SerialUtilities.readPaint(stream);
         this.lineStroke = SerialUtilities.readStroke(stream);
     }
+
+	public void applyToBlock(StandardChartTheme standardChartTheme) {
+	}
 
 }

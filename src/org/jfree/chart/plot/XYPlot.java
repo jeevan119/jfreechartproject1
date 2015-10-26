@@ -265,6 +265,7 @@ import org.jfree.chart.JFreeChart;
 
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.annotations.Annotation;
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYAnnotationBoundsInfo;
@@ -5745,6 +5746,17 @@ public class XYPlot extends IntermediateIntermediatePlot implements ValueAxisPlo
 			defaultPlotEditor.setDrawLines(BooleanUtilities.valueOf(r.getPlotLines()));
 			defaultPlotEditor.setDrawShapes(BooleanUtilities.valueOf(r.getBaseShapesVisible()));
 		}
+	}
+
+	public void updatePlotProperties(DefaultPlotEditor defaultPlotEditor) {
+		XYItemRenderer r = this.getRenderer();
+		if (r instanceof StandardXYItemRenderer) {
+			((StandardXYItemRenderer) r).setPlotLines(defaultPlotEditor.getDrawLines().booleanValue());
+		}
+	}
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
+		standardChartTheme.applyToXYPlot(this);
 	}
 
 }

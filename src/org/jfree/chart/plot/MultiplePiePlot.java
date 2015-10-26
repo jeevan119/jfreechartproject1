@@ -80,6 +80,7 @@ import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.title.TextTitle;
@@ -683,6 +684,13 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
     }
 
 	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void updatePlotProperties(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
+		standardChartTheme.applyToMultiplePiePlot(this);
 	}
 
 }

@@ -115,6 +115,7 @@ import java.util.ResourceBundle;
 
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.chart.util.ResourceBundleWrapper;
@@ -1299,5 +1300,9 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
         }
         return clone;
     }
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
+		standardChartTheme.applyToMeterPlot(this);
+	}
 
 }

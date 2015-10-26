@@ -48,7 +48,7 @@ package org.jfree.chart.block;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.ui.Size2D;
 import org.jfree.util.PublicCloneable;
 
@@ -128,5 +128,8 @@ public class EmptyBlock extends AbstractBlock
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+	public void applyToBlock(StandardChartTheme standardChartTheme) {
+	}
 
 }

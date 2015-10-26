@@ -461,4 +461,8 @@ public abstract class Title extends AbstractBlock
 
 	public abstract void applyToTitle(StandardChartTheme standardChartTheme);
 
+	public void applyToBlock(StandardChartTheme standardChartTheme) {
+		standardChartTheme.applyToTitle(this);
+	}
+
 }

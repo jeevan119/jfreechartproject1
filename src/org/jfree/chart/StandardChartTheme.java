@@ -1149,14 +1149,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      * @param b  the block.
      */
     protected void applyToBlock(Block b) {
-        if (b instanceof Title) {
-            applyToTitle((Title) b);
-        }
-        else if (b instanceof LabelBlock) {
-            LabelBlock lb = (LabelBlock) b;
-            lb.setFont(this.regularFont);
-            lb.setPaint(this.legendItemPaint);
-        }
+        b.applyToBlock(this);
     }
 
     /**
@@ -1174,37 +1167,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
         }
         plot.setOutlinePaint(this.plotOutlinePaint);
 
-        // now handle specific plot types (and yes, I know this is some
-        // really ugly code that has to be manually updated any time a new
-        // plot type is added - I should have written something much cooler,
-        // but I didn't and neither did anyone else).
-        if (plot instanceof PiePlot) {
-            applyToPiePlot((PiePlot) plot);
-        }
-        else if (plot instanceof MultiplePiePlot) {
-            applyToMultiplePiePlot((MultiplePiePlot) plot);
-        }
-        else if (plot instanceof CategoryPlot) {
-            applyToCategoryPlot((CategoryPlot) plot);
-        }
-        else if (plot instanceof XYPlot) {
-            applyToXYPlot((XYPlot) plot);
-        }
-        else if (plot instanceof FastScatterPlot) {
-            applyToFastScatterPlot((FastScatterPlot) plot);
-        }
-        else if (plot instanceof MeterPlot) {
-            applyToMeterPlot((MeterPlot) plot);
-        }
-        else if (plot instanceof ThermometerPlot) {
-            applyToThermometerPlot((ThermometerPlot) plot);
-        }
-        else if (plot instanceof SpiderWebPlot) {
-            applyToSpiderWebPlot((SpiderWebPlot) plot);
-        }
-        else if (plot instanceof PolarPlot) {
-            applyToPolarPlot((PolarPlot) plot);
-        }
+        plot.applyToPlot(this);
     }
 
     /**
@@ -1214,7 +1177,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param plot  the plot (<code>null</code> not permitted).
      */
-    protected void applyToPiePlot(PiePlot plot) {
+    public void applyToPiePlot(PiePlot plot) {
         plot.setLabelLinkPaint(this.labelLinkPaint);
         plot.setLabelLinkStyle(this.labelLinkStyle);
         plot.setLabelFont(this.regularFont);
@@ -1238,7 +1201,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param plot  the plot (<code>null</code> not permitted).
      */
-    protected void applyToMultiplePiePlot(MultiplePiePlot plot) {
+    public void applyToMultiplePiePlot(MultiplePiePlot plot) {
         apply(plot.getPieChart());
     }
 
@@ -1247,7 +1210,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param plot  the plot (<code>null</code> not permitted).
      */
-    protected void applyToCategoryPlot(CategoryPlot plot) {
+    public void applyToCategoryPlot(CategoryPlot plot) {
         plot.setAxisOffset(this.axisOffset);
         plot.setDomainGridlinePaint(this.domainGridlinePaint);
         plot.setRangeGridlinePaint(this.rangeGridlinePaint);
@@ -1308,7 +1271,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param plot  the plot (<code>null</code> not permitted).
      */
-    protected void applyToXYPlot(XYPlot plot) {
+    public void applyToXYPlot(XYPlot plot) {
         plot.setAxisOffset(this.axisOffset);
         plot.setDomainZeroBaselinePaint(this.baselinePaint);
         plot.setRangeZeroBaselinePaint(this.baselinePaint);
@@ -1378,7 +1341,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      * Applies the attributes of this theme to a {@link FastScatterPlot}.
      * @param plot
      */
-    protected void applyToFastScatterPlot(FastScatterPlot plot) {
+    public void applyToFastScatterPlot(FastScatterPlot plot) {
         plot.setDomainGridlinePaint(this.domainGridlinePaint);
         plot.setRangeGridlinePaint(this.rangeGridlinePaint);
         ValueAxis xAxis = plot.getDomainAxis();
@@ -1398,7 +1361,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param plot  the plot (<code>null</code> not permitted).
      */
-    protected void applyToPolarPlot(PolarPlot plot) {
+    public void applyToPolarPlot(PolarPlot plot) {
         plot.setAngleLabelFont(this.regularFont);
         plot.setAngleLabelPaint(this.tickLabelPaint);
         plot.setAngleGridlinePaint(this.domainGridlinePaint);
@@ -1414,7 +1377,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param plot  the plot (<code>null</code> not permitted).
      */
-    protected void applyToSpiderWebPlot(SpiderWebPlot plot) {
+    public void applyToSpiderWebPlot(SpiderWebPlot plot) {
         plot.setLabelFont(this.regularFont);
         plot.setLabelPaint(this.axisLabelPaint);
         plot.setAxisLinePaint(this.axisLabelPaint);
@@ -1425,7 +1388,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param plot  the plot (<code>null</code> not permitted).
      */
-    protected void applyToMeterPlot(MeterPlot plot) {
+    public void applyToMeterPlot(MeterPlot plot) {
         plot.setDialBackgroundPaint(this.plotBackgroundPaint);
         plot.setValueFont(this.largeFont);
         plot.setValuePaint(this.axisLabelPaint);
@@ -1441,7 +1404,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param plot  the plot.
      */
-    protected void applyToThermometerPlot(ThermometerPlot plot) {
+    public void applyToThermometerPlot(ThermometerPlot plot) {
         plot.setValueFont(this.largeFont);
         plot.setThermometerPaint(this.thermometerPaint);
         ValueAxis axis = plot.getRangeAxis();

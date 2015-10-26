@@ -45,7 +45,7 @@ package org.jfree.chart.block;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.ui.Drawable;
 import org.jfree.ui.Size2D;
 
@@ -117,5 +117,7 @@ public interface Block extends Drawable {
      * @return An optional return value (possibly <code>null</code>).
      */
     public Object draw(Graphics2D g2, Rectangle2D area, Object params);
+
+	public abstract void applyToBlock(StandardChartTheme standardChartTheme);
 
 }

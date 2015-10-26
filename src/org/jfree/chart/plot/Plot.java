@@ -158,6 +158,7 @@ import javax.swing.event.EventListenerList;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.LegendItemSource;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.annotations.Annotation;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.editor.DefaultPlotEditor;
@@ -1499,5 +1500,9 @@ public abstract class Plot implements AxisChangeListener,
 	}
 
 	public abstract void createPlotPanel(DefaultPlotEditor defaultPlotEditor);
+
+	public abstract void updatePlotProperties(DefaultPlotEditor defaultPlotEditor);
+
+	public abstract void applyToPlot(StandardChartTheme standardChartTheme);
 
 }

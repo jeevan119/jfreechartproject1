@@ -83,7 +83,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.AxisState;
 import org.jfree.chart.axis.NumberAxis;
@@ -1129,6 +1129,13 @@ public class FastScatterPlot extends Plot implements ValueAxisPlot, Pannable,
     }
 
 	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void updatePlotProperties(DefaultPlotEditor defaultPlotEditor) {
+	}
+
+	public void applyToPlot(StandardChartTheme standardChartTheme) {
+		standardChartTheme.applyToFastScatterPlot(this);
 	}
 
 }
