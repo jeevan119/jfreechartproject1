@@ -98,6 +98,7 @@ import java.util.List;
 
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.entity.CategoryItemEntity;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.event.PlotChangeEvent;
@@ -1645,5 +1646,8 @@ public class SpiderWebPlot extends Plot implements Cloneable, Serializable {
             this.dataset.addChangeListener(this);
         }
     }
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
 
 }

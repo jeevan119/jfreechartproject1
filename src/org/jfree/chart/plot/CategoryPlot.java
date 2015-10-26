@@ -228,6 +228,7 @@ import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.TickType;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.axis.ValueTick;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.AnnotationChangeEvent;
 import org.jfree.chart.event.AnnotationChangeListener;
 import org.jfree.chart.event.ChartChangeEventType;
@@ -237,6 +238,7 @@ import org.jfree.chart.event.RendererChangeListener;
 import org.jfree.chart.renderer.category.AbstractCategoryItemRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRendererState;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.chart.util.ResourceBundleWrapper;
 import org.jfree.chart.util.ShadowGenerator;
@@ -249,6 +251,7 @@ import org.jfree.io.SerialUtilities;
 import org.jfree.ui.Layer;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
+import org.jfree.util.BooleanUtilities;
 import org.jfree.util.ObjectList;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.util.PaintUtilities;
@@ -5140,6 +5143,15 @@ public class CategoryPlot extends IntermediateIntermediatePlot implements ValueA
 			}
 		}
 		return result;
+	}
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+		CategoryItemRenderer renderer = this.getRenderer();
+		if (renderer instanceof LineAndShapeRenderer) {
+			LineAndShapeRenderer r = (LineAndShapeRenderer) renderer;
+			defaultPlotEditor.setDrawLines(BooleanUtilities.valueOf(r.getBaseLinesVisible()));
+			defaultPlotEditor.setDrawShapes(BooleanUtilities.valueOf(r.getBaseShapesVisible()));
+		}
 	}
 
 }

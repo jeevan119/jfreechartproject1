@@ -2,6 +2,7 @@ package org.jfree.chart.plot;
 
 
 import java.util.Map;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.general.ValueDataset;
 import org.jfree.ui.Layer;
@@ -54,5 +55,8 @@ public abstract class IntermediatePlot extends Plot {
 		}
 		DatasetChangeEvent event = new DatasetChangeEvent(this, dataset);
 		datasetChanged(event);
+	}
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
 	}
 }

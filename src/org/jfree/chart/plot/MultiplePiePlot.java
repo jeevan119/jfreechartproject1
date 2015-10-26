@@ -80,6 +80,7 @@ import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.util.ParamChecks;
@@ -680,5 +681,8 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
         this.legendItemShape = SerialUtilities.readShape(stream);
         this.sectionPaints = new HashMap();
     }
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
 
 }

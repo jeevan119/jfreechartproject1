@@ -97,6 +97,7 @@ import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.ColorBar;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.entity.ContourEntity;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.event.AxisChangeEvent;
@@ -1857,5 +1858,8 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 
         return clone;
     }
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
 
 }

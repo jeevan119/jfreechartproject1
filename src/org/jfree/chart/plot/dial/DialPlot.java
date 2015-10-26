@@ -57,6 +57,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotRenderingInfo;
@@ -830,6 +831,9 @@ public class DialPlot extends Plot implements DialLayerChangeListener {
             throws IOException, ClassNotFoundException {
         stream.defaultReadObject();
     }
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
 
 
 }

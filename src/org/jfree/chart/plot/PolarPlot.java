@@ -97,6 +97,7 @@ import org.jfree.chart.axis.TickType;
 import org.jfree.chart.axis.TickUnit;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.axis.ValueTick;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.event.RendererChangeEvent;
 import org.jfree.chart.event.RendererChangeListener;
@@ -2229,5 +2230,8 @@ public class PolarPlot extends Plot implements ValueAxisPlot, Zoomable,
         return getAxis().draw(g2, dataArea.getMinY(), plotArea, dataArea,
                 RectangleEdge.TOP, null);
     }
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
 
 }

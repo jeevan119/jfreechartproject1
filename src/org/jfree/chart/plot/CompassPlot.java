@@ -86,6 +86,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.needle.ArrowNeedle;
 import org.jfree.chart.needle.LineNeedle;
@@ -886,5 +887,8 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
         this.roseCenterPaint = SerialUtilities.readPaint(stream);
         this.roseHighlightPaint = SerialUtilities.readPaint(stream);
     }
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
 
 }

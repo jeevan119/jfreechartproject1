@@ -160,6 +160,7 @@ import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.LegendItemSource;
 import org.jfree.chart.annotations.Annotation;
 import org.jfree.chart.axis.AxisLocation;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.entity.PlotEntity;
 import org.jfree.chart.event.AnnotationChangeEvent;
@@ -1496,5 +1497,7 @@ public abstract class Plot implements AxisChangeListener,
 		}
 		return result;
 	}
+
+	public abstract void createPlotPanel(DefaultPlotEditor defaultPlotEditor);
 
 }

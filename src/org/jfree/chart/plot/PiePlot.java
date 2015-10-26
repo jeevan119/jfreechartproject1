@@ -209,6 +209,7 @@ import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.PaintMap;
 import org.jfree.chart.StrokeMap;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.entity.PieSectionEntity;
 import org.jfree.chart.event.PlotChangeEvent;
@@ -3731,5 +3732,8 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
         Comparable key = getSectionKey(section);
         setExplodePercent(key, percent);
     }
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
 
 }

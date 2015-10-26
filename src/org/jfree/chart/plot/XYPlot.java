@@ -276,6 +276,7 @@ import org.jfree.chart.axis.AxisState;
 import org.jfree.chart.axis.TickType;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.axis.ValueTick;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.AnnotationChangeEvent;
 import org.jfree.chart.event.ChartChangeEventType;
 import org.jfree.chart.event.PlotChangeEvent;
@@ -283,6 +284,7 @@ import org.jfree.chart.event.RendererChangeEvent;
 import org.jfree.chart.event.RendererChangeListener;
 import org.jfree.chart.renderer.RendererUtilities;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
+import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRendererState;
 import org.jfree.chart.util.ParamChecks;
@@ -297,6 +299,7 @@ import org.jfree.io.SerialUtilities;
 import org.jfree.ui.Layer;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
+import org.jfree.util.BooleanUtilities;
 import org.jfree.util.ObjectList;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.util.PaintUtilities;
@@ -5733,6 +5736,15 @@ public class XYPlot extends IntermediateIntermediatePlot implements ValueAxisPlo
 			result = (XYPlot) thisSubplots.get(subplotIndex);
 		}
 		return result;
+	}
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+		XYItemRenderer renderer = this.getRenderer();
+		if (renderer instanceof StandardXYItemRenderer) {
+			StandardXYItemRenderer r = (StandardXYItemRenderer) renderer;
+			defaultPlotEditor.setDrawLines(BooleanUtilities.valueOf(r.getPlotLines()));
+			defaultPlotEditor.setDrawShapes(BooleanUtilities.valueOf(r.getBaseShapesVisible()));
+		}
 	}
 
 }

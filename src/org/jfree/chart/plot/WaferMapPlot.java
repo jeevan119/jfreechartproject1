@@ -61,6 +61,7 @@ import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.editor.DefaultPlotEditor;
 import org.jfree.chart.event.PlotChangeEvent;
 import org.jfree.chart.event.RendererChangeEvent;
 import org.jfree.chart.event.RendererChangeListener;
@@ -430,5 +431,8 @@ public class WaferMapPlot extends Plot implements RendererChangeListener,
     public void rendererChanged(RendererChangeEvent event) {
         fireChangeEvent();
     }
+
+	public void createPlotPanel(DefaultPlotEditor defaultPlotEditor) {
+	}
 
 }

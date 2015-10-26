@@ -88,7 +88,7 @@ import org.jfree.util.BooleanUtilities;
 /**
  * A panel for editing the properties of a {@link Plot}.
  */
-class DefaultPlotEditor extends JPanel implements ActionListener {
+public class DefaultPlotEditor extends JPanel implements ActionListener {
 
     /** Orientation constants. */
     private final static String[] orientationNames = {"Vertical", "Horizontal"};
@@ -190,25 +190,7 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
         else if (plot instanceof XYPlot) {
             this.plotOrientation = ((XYPlot) plot).getOrientation();
         }
-        if (plot instanceof CategoryPlot) {
-            CategoryItemRenderer renderer = ((CategoryPlot) plot).getRenderer();
-            if (renderer instanceof LineAndShapeRenderer) {
-                LineAndShapeRenderer r = (LineAndShapeRenderer) renderer;
-                this.drawLines = BooleanUtilities.valueOf(
-                        r.getBaseLinesVisible());
-                this.drawShapes = BooleanUtilities.valueOf(
-                        r.getBaseShapesVisible());
-            }
-        }
-        else if (plot instanceof XYPlot) {
-            XYItemRenderer renderer = ((XYPlot) plot).getRenderer();
-            if (renderer instanceof StandardXYItemRenderer) {
-                StandardXYItemRenderer r = (StandardXYItemRenderer) renderer;
-                this.drawLines = BooleanUtilities.valueOf(r.getPlotLines());
-                this.drawShapes = BooleanUtilities.valueOf(
-                        r.getBaseShapesVisible());
-            }
-        }
+        plot.createPlotPanel(this);
 
         setLayout(new BorderLayout());
 
@@ -672,5 +654,13 @@ class DefaultPlotEditor extends JPanel implements ActionListener {
 //dmo: (end dmo additions)
 
     }
+
+	public void setDrawLines(Boolean drawLines) {
+		this.drawLines = drawLines;
+	}
+
+	public void setDrawShapes(Boolean drawShapes) {
+		this.drawShapes = drawShapes;
+	}
 
 }
