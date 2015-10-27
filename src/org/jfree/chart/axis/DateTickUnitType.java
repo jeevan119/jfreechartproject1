@@ -43,6 +43,8 @@ package org.jfree.chart.axis;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * An enumeration of the unit types for a {@link DateTickUnit} instance.
@@ -172,5 +174,20 @@ public class DateTickUnitType implements Serializable {
         }
         return null;
     }
+
+	/**
+	 * Calculates a new date by adding this unit to the base date.
+	 * @param base   the base date.
+	 * @param zone   the time zone for the date calculation.
+	 * @param count
+	 * @return  A new date one unit after the base date.
+	 * @since  1.0.6
+	 */
+	public Date addToDate(Date base, TimeZone zone, int count) {
+		Calendar calendar = Calendar.getInstance(zone);
+		calendar.setTime(base);
+		calendar.add(getCalendarField(), count);
+		return calendar.getTime();
+	}
 
 }

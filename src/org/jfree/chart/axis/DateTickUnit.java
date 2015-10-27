@@ -232,14 +232,7 @@ public class DateTickUnit extends TickUnit implements Serializable {
      * @since 1.0.6
      */
     public Date addToDate(Date base, TimeZone zone) {
-        // as far as I know, the Locale for the calendar only affects week
-        // number calculations, and since DateTickUnit doesn't do week
-        // arithmetic, the default locale (whatever it is) should be fine
-        // here...
-        Calendar calendar = Calendar.getInstance(zone);
-        calendar.setTime(base);
-        calendar.add(this.unitType.getCalendarField(), this.count);
-        return calendar.getTime();
+        return unitType.addToDate(base, zone, count);
     }
 
     /**
@@ -646,7 +639,7 @@ public class DateTickUnit extends TickUnit implements Serializable {
      *     should use {@link #addToDate(Date, TimeZone)} instead.
      */
     public Date addToDate(Date base) {
-        return addToDate(base, TimeZone.getDefault());
+        return unitType.addToDate(base, TimeZone.getDefault(), count);
     }
 
 }
