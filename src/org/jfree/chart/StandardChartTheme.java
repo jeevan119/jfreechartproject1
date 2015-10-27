@@ -1136,11 +1136,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      * @param bc  a block container (<code>null</code> not permitted).
      */
     public void applyToBlockContainer(BlockContainer bc) {
-        Iterator iterator = bc.getBlocks().iterator();
-        while (iterator.hasNext()) {
-            Block b = (Block) iterator.next();
-            applyToBlock(b);
-        }
+        bc.applyToBlockContainer(this);
     }
 
     /**
@@ -1148,7 +1144,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      *
      * @param b  the block.
      */
-    protected void applyToBlock(Block b) {
+    public void applyToBlock(Block b) {
         b.applyToBlock(this);
     }
 
@@ -1178,22 +1174,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
      * @param plot  the plot (<code>null</code> not permitted).
      */
     public void applyToPiePlot(PiePlot plot) {
-        plot.setLabelLinkPaint(this.labelLinkPaint);
-        plot.setLabelLinkStyle(this.labelLinkStyle);
-        plot.setLabelFont(this.regularFont);
-        plot.setShadowGenerator(this.shadowGenerator);
-
-        // clear the section attributes so that the theme's DrawingSupplier
-        // will be used
-        if (plot.getAutoPopulateSectionPaint()) {
-            plot.clearSectionPaints(false);
-        }
-        if (plot.getAutoPopulateSectionOutlinePaint()) {
-            plot.clearSectionOutlinePaints(false);
-        }
-        if (plot.getAutoPopulateSectionOutlineStroke()) {
-            plot.clearSectionOutlineStrokes(false);
-        }
+        plot.applyToPiePlot(labelLinkPaint, labelLinkStyle, regularFont, shadowGenerator);
     }
 
     /**
@@ -1441,21 +1422,11 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
         axis.setTickLabelFont(this.regularFont);
         axis.setTickLabelPaint(this.tickLabelPaint);
         if (axis instanceof SymbolAxis) {
-            applyToSymbolAxis((SymbolAxis) axis);
+            ((SymbolAxis) axis).applyToSymbolAxis(gridBandPaint, gridBandAlternatePaint);
         }
         if (axis instanceof PeriodAxis) {
             applyToPeriodAxis((PeriodAxis) axis);
         }
-    }
-
-    /**
-     * Applies the attributes for this theme to a {@link SymbolAxis}.
-     *
-     * @param axis  the axis (<code>null</code> not permitted).
-     */
-    protected void applyToSymbolAxis(SymbolAxis axis) {
-        axis.setGridBandPaint(this.gridBandPaint);
-        axis.setGridBandAlternatePaint(this.gridBandAlternatePaint);
     }
 
     /**
@@ -1477,20 +1448,6 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
     }
 
     /**
-     * Applies the attributes for this theme to an {@link AbstractRenderer}.
-     *
-     * @param renderer  the renderer (<code>null</code> not permitted).
-     */
-    protected void applyToAbstractRenderer(AbstractRenderer renderer) {
-        if (renderer.getAutoPopulateSeriesPaint()) {
-            renderer.clearSeriesPaints(false);
-        }
-        if (renderer.getAutoPopulateSeriesStroke()) {
-            renderer.clearSeriesStrokes(false);
-        }
-    }
-
-    /**
      * Applies the settings of this theme to the specified renderer.
      *
      * @param renderer  the renderer (<code>null</code> not permitted).
@@ -1499,7 +1456,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
         ParamChecks.nullNotPermitted(renderer, "renderer");
 
         if (renderer instanceof AbstractRenderer) {
-            applyToAbstractRenderer((AbstractRenderer) renderer);
+            ((AbstractRenderer) renderer).applyToAbstractRenderer();
         }
 
         renderer.setBaseItemLabelFont(this.regularFont);
@@ -1548,7 +1505,7 @@ public class StandardChartTheme implements ChartTheme, Cloneable,
     protected void applyToXYItemRenderer(XYItemRenderer renderer) {
         ParamChecks.nullNotPermitted(renderer, "renderer");
         if (renderer instanceof AbstractRenderer) {
-            applyToAbstractRenderer((AbstractRenderer) renderer);
+            ((AbstractRenderer) renderer).applyToAbstractRenderer();
         }
         renderer.setBaseItemLabelFont(this.regularFont);
         renderer.setBaseItemLabelPaint(this.itemLabelPaint);

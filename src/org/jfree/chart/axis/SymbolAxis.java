@@ -808,4 +808,14 @@ public class SymbolAxis extends NumberAxis implements Serializable {
         this.gridBandAlternatePaint = SerialUtilities.readPaint(stream);
     }
 
+	/**
+	 * Applies the attributes for this theme to a  {@link SymbolAxis} .
+	 * @param gridBandPaint
+	 * @param gridBandAlternatePaint
+	 */
+	public void applyToSymbolAxis(Paint gridBandPaint, Paint gridBandAlternatePaint) {
+		setGridBandPaint(gridBandPaint);
+		setGridBandAlternatePaint(gridBandAlternatePaint);
+	}
+
 }

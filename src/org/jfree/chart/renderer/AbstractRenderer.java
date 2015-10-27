@@ -4186,4 +4186,16 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 		return result;
 	}
 
+	/**
+	 * Applies the attributes for this theme to an  {@link AbstractRenderer} .
+	 */
+	public void applyToAbstractRenderer() {
+		if (getAutoPopulateSeriesPaint()) {
+			clearSeriesPaints(false);
+		}
+		if (getAutoPopulateSeriesStroke()) {
+			clearSeriesStrokes(false);
+		}
+	}
+
 }

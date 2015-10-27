@@ -3744,4 +3744,28 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		standardChartTheme.applyToPiePlot(this);
 	}
 
+	/**
+	 * Applies the attributes of this theme to a  {@link PiePlot}  instance. This method also clears any set values for the section paint, outline etc, so that the theme's  {@link DrawingSupplier}  will be used.
+	 * @param labelLinkPaint
+	 * @param labelLinkStyle
+	 * @param regularFont
+	 * @param shadowGenerator
+	 */
+	public void applyToPiePlot(Paint labelLinkPaint, PieLabelLinkStyle labelLinkStyle, Font regularFont,
+			ShadowGenerator shadowGenerator) {
+		setLabelLinkPaint(labelLinkPaint);
+		setLabelLinkStyle(labelLinkStyle);
+		setLabelFont(regularFont);
+		setShadowGenerator(shadowGenerator);
+		if (getAutoPopulateSectionPaint()) {
+			clearSectionPaints(false);
+		}
+		if (getAutoPopulateSectionOutlinePaint()) {
+			clearSectionOutlinePaints(false);
+		}
+		if (getAutoPopulateSectionOutlineStroke()) {
+			clearSectionOutlineStrokes(false);
+		}
+	}
+
 }

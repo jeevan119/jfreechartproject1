@@ -72,12 +72,19 @@ import javax.swing.event.EventListenerList;
 import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.block.AbstractBlock;
 import org.jfree.chart.block.Block;
+import org.jfree.chart.block.BlockParams;
+import org.jfree.chart.block.EntityBlockResult;
+import org.jfree.chart.block.LengthConstraintType;
+import org.jfree.chart.block.RectangleConstraint;
+import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.event.TitleChangeEvent;
 import org.jfree.chart.event.TitleChangeListener;
 import org.jfree.chart.util.ParamChecks;
+import org.jfree.data.Range;
 import org.jfree.ui.HorizontalAlignment;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
+import org.jfree.ui.Size2D;
 import org.jfree.ui.VerticalAlignment;
 import org.jfree.util.ObjectUtilities;
 
@@ -463,6 +470,92 @@ public abstract class Title extends AbstractBlock
 
 	public void applyToBlock(StandardChartTheme standardChartTheme) {
 		standardChartTheme.applyToTitle(this);
+	}
+
+	/**
+	 * Draws a title.  The title should be drawn at the top, bottom, left or right of the specified area, and the area should be updated to reflect the amount of space used by the title.
+	 * @param g2   the graphics device (<code>null</code> not permitted).
+	 * @param area   the chart area, excluding any existing titles (<code>null</code> not permitted).
+	 * @param entities   a flag that controls whether or not an entity collection is returned for the title.
+	 * @return  An entity collection for the title (possibly <code>null</code>).
+	 */
+	public EntityCollection drawTitle(Graphics2D g2, Rectangle2D area, boolean entities) {
+		ParamChecks.nullNotPermitted(this, "t");
+		ParamChecks.nullNotPermitted(area, "area");
+		Rectangle2D titleArea;
+		RectangleEdge position = getPosition();
+		double ww = area.getWidth();
+		if (ww <= 0.0) {
+			return null;
+		}
+		double hh = area.getHeight();
+		if (hh <= 0.0) {
+			return null;
+		}
+		RectangleConstraint constraint = new RectangleConstraint(ww, new Range(0.0, ww), LengthConstraintType.RANGE, hh,
+				new Range(0.0, hh), LengthConstraintType.RANGE);
+		Object retValue = null;
+		BlockParams p = new BlockParams();
+		p.setGenerateEntities(entities);
+		if (position == RectangleEdge.TOP) {
+			Size2D size = arrange(g2, constraint);
+			titleArea = createAlignedRectangle2D(size, area, getHorizontalAlignment(), VerticalAlignment.TOP);
+			retValue = draw(g2, titleArea, p);
+			area.setRect(area.getX(), Math.min(area.getY() + size.height, area.getMaxY()), area.getWidth(),
+					Math.max(area.getHeight() - size.height, 0));
+		} else if (position == RectangleEdge.BOTTOM) {
+			Size2D size = arrange(g2, constraint);
+			titleArea = createAlignedRectangle2D(size, area, getHorizontalAlignment(), VerticalAlignment.BOTTOM);
+			retValue = draw(g2, titleArea, p);
+			area.setRect(area.getX(), area.getY(), area.getWidth(), area.getHeight() - size.height);
+		} else if (position == RectangleEdge.RIGHT) {
+			Size2D size = arrange(g2, constraint);
+			titleArea = createAlignedRectangle2D(size, area, HorizontalAlignment.RIGHT, getVerticalAlignment());
+			retValue = draw(g2, titleArea, p);
+			area.setRect(area.getX(), area.getY(), area.getWidth() - size.width, area.getHeight());
+		} else if (position == RectangleEdge.LEFT) {
+			Size2D size = arrange(g2, constraint);
+			titleArea = createAlignedRectangle2D(size, area, HorizontalAlignment.LEFT, getVerticalAlignment());
+			retValue = draw(g2, titleArea, p);
+			area.setRect(area.getX() + size.width, area.getY(), area.getWidth() - size.width, area.getHeight());
+		} else {
+			throw new RuntimeException("Unrecognised title position.");
+		}
+		EntityCollection result = null;
+		if (retValue instanceof EntityBlockResult) {
+			EntityBlockResult ebr = (EntityBlockResult) retValue;
+			result = ebr.getEntityCollection();
+		}
+		return result;
+	}
+
+	/**
+	 * Creates a rectangle that is aligned to the frame.
+	 * @param dimensions   the dimensions for the rectangle.
+	 * @param frame   the frame to align to.
+	 * @param hAlign   the horizontal alignment.
+	 * @param vAlign   the vertical alignment.
+	 * @return  A rectangle.
+	 */
+	private Rectangle2D createAlignedRectangle2D(Size2D dimensions, Rectangle2D frame, HorizontalAlignment hAlign,
+			VerticalAlignment vAlign) {
+		double x = Double.NaN;
+		double y = Double.NaN;
+		if (hAlign == HorizontalAlignment.LEFT) {
+			x = frame.getX();
+		} else if (hAlign == HorizontalAlignment.CENTER) {
+			x = frame.getCenterX() - (dimensions.width / 2.0);
+		} else if (hAlign == HorizontalAlignment.RIGHT) {
+			x = frame.getMaxX() - dimensions.width;
+		}
+		if (vAlign == VerticalAlignment.TOP) {
+			y = frame.getY();
+		} else if (vAlign == VerticalAlignment.CENTER) {
+			y = frame.getCenterY() - (dimensions.height / 2.0);
+		} else if (vAlign == VerticalAlignment.BOTTOM) {
+			y = frame.getMaxY() - dimensions.height;
+		}
+		return new Rectangle2D.Double(x, y, dimensions.width, dimensions.height);
 	}
 
 }

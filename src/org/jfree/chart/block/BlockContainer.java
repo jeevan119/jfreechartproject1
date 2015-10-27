@@ -284,4 +284,16 @@ public class BlockContainer extends AbstractBlock
 	public void applyToBlock(StandardChartTheme standardChartTheme) {
 	}
 
+	/**
+	 * Applies the attributes of this theme to the specified container.
+	 * @param standardChartTheme
+	 */
+	public void applyToBlockContainer(StandardChartTheme standardChartTheme) {
+		Iterator iterator = getBlocks().iterator();
+		while (iterator.hasNext()) {
+			Block b = (Block) iterator.next();
+			standardChartTheme.applyToBlock(b);
+		}
+	}
+
 }
