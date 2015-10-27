@@ -40,9 +40,20 @@
 
 package org.jfree.chart.plot;
 
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Stroke;
+import java.awt.geom.Arc2D;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.chart.renderer.RendererState;
+import org.jfree.data.general.PieDataset;
+import org.jfree.text.TextBox;
+import org.jfree.util.Rotation;
 
 /**
  * A renderer state.
@@ -275,5 +286,80 @@ public class PiePlotState extends RendererState {
     public void setPieWRadius(double radius) {
         this.pieWRadius = radius;
     }
+
+	/**
+	 * Returns the center for the specified section. Checks to see if the section is exploded and recalculates the new center if so.
+	 * @param key   section key.
+	 * @param dataset
+	 * @param direction
+	 * @param piePlot
+	 * @return  The center for the specified section.
+	 * @since  1.0.14
+	 */
+	public Point2D getArcCenter(Comparable key, PieDataset dataset, Rotation direction, PiePlot piePlot) {
+		Point2D center = new Point2D.Double(getPieCenterX(), getPieCenterY());
+		double ep = piePlot.getExplodePercent(key);
+		double mep = piePlot.getMaximumExplodePercent();
+		if (mep > 0.0) {
+			ep = ep / mep;
+		}
+		if (ep != 0) {
+			Rectangle2D pieArea = getPieArea();
+			Rectangle2D expPieArea = getExplodedPieArea();
+			double angle1, angle2;
+			Number n = dataset.getValue(key);
+			double value = n.doubleValue();
+			if (direction == Rotation.CLOCKWISE) {
+				angle1 = getLatestAngle();
+				angle2 = angle1 - value / getTotal() * 360.0;
+			} else if (direction == Rotation.ANTICLOCKWISE) {
+				angle1 = getLatestAngle();
+				angle2 = angle1 + value / getTotal() * 360.0;
+			} else {
+				throw new IllegalStateException("Rotation type not recognised.");
+			}
+			double angle = (angle2 - angle1);
+			Arc2D arc1 = new Arc2D.Double(pieArea, angle1, angle / 2, Arc2D.OPEN);
+			Point2D point1 = arc1.getEndPoint();
+			Arc2D.Double arc2 = new Arc2D.Double(expPieArea, angle1, angle / 2, Arc2D.OPEN);
+			Point2D point2 = arc2.getEndPoint();
+			double deltaX = (point1.getX() - point2.getX()) * ep;
+			double deltaY = (point1.getY() - point2.getY()) * ep;
+			center = new Point2D.Double(getPieCenterX() - deltaX, getPieCenterY() - deltaY);
+		}
+		return center;
+	}
+
+	public TextBox drawLeftRightLabel(Graphics2D g2, PieLabelRecord record, double anchorX, double targetX,
+			double targetY, boolean labelLinksVisible, Paint labelLinkPaint, Stroke labelLinkStroke,
+			PieLabelLinkStyle labelLinkStyle) {
+		if (labelLinksVisible) {
+			double theta = record.getAngle();
+			double linkX = getPieCenterX() + Math.cos(theta) * getPieWRadius() * record.getLinkPercent();
+			double linkY = getPieCenterY() - Math.sin(theta) * getPieHRadius() * record.getLinkPercent();
+			double elbowX = getPieCenterX() + Math.cos(theta) * getLinkArea().getWidth() / 2.0;
+			double elbowY = getPieCenterY() - Math.sin(theta) * getLinkArea().getHeight() / 2.0;
+			double anchorY = elbowY;
+			g2.setPaint(labelLinkPaint);
+			g2.setStroke(labelLinkStroke);
+			PieLabelLinkStyle style = labelLinkStyle;
+			if (style.equals(PieLabelLinkStyle.STANDARD)) {
+				g2.draw(new Line2D.Double(linkX, linkY, elbowX, elbowY));
+				g2.draw(new Line2D.Double(anchorX, anchorY, elbowX, elbowY));
+				g2.draw(new Line2D.Double(anchorX, anchorY, targetX, targetY));
+			} else if (style.equals(PieLabelLinkStyle.QUAD_CURVE)) {
+				QuadCurve2D q = new QuadCurve2D.Float();
+				q.setCurve(targetX, targetY, anchorX, anchorY, elbowX, elbowY);
+				g2.draw(q);
+				g2.draw(new Line2D.Double(elbowX, elbowY, linkX, linkY));
+			} else if (style.equals(PieLabelLinkStyle.CUBIC_CURVE)) {
+				CubicCurve2D c = new CubicCurve2D.Float();
+				c.setCurve(targetX, targetY, anchorX, anchorY, elbowX, elbowY, linkX, linkY);
+				g2.draw(c);
+			}
+		}
+		TextBox tb = record.getLabel();
+		return tb;
+	}
 
 }

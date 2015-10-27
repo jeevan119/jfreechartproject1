@@ -44,8 +44,10 @@ package org.jfree.chart.plot;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -221,5 +223,29 @@ public class MeterInterval implements Serializable {
         this.outlineStroke = SerialUtilities.readStroke(stream);
         this.backgroundPaint = SerialUtilities.readPaint(stream);
     }
+
+	/**
+	 * Draws the arc to represent an interval.
+	 * @param g2   the graphics device.
+	 * @param meterArea   the drawing area.
+	 * @param meterPlot
+	 */
+	public void drawArcForInterval(Graphics2D g2, Rectangle2D meterArea, MeterPlot meterPlot) {
+		double minValue = getRange().getLowerBound();
+		double maxValue = getRange().getUpperBound();
+		Paint outlinePaint = getOutlinePaint();
+		Stroke outlineStroke = getOutlineStroke();
+		Paint backgroundPaint = getBackgroundPaint();
+		if (backgroundPaint != null) {
+			meterPlot.fillArc(g2, meterArea, minValue, maxValue, backgroundPaint, false);
+		}
+		if (outlinePaint != null) {
+			if (outlineStroke != null) {
+				meterPlot.drawArc(g2, meterArea, minValue, maxValue, outlinePaint, outlineStroke);
+			}
+			meterPlot.drawTick(g2, meterArea, minValue, true);
+			meterPlot.drawTick(g2, meterArea, maxValue, true);
+		}
+	}
 
 }

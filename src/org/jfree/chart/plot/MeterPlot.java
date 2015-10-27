@@ -830,13 +830,12 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
                         this.dialBackgroundPaint, true);
             }
             drawTicks(g2, meterArea, dataMin, dataMax);
-            drawArcForInterval(g2, meterArea, new MeterInterval("", this.range,
-                    this.dialOutlinePaint, new BasicStroke(1.0f), null));
+            new MeterInterval("", this.range, this.dialOutlinePaint, new BasicStroke(1.0f), null).drawArcForInterval(g2, meterArea, this);
 
             Iterator iterator = this.intervals.iterator();
             while (iterator.hasNext()) {
                 MeterInterval interval = (MeterInterval) iterator.next();
-                drawArcForInterval(g2, meterArea, interval);
+                interval.drawArcForInterval(g2, meterArea, this);
             }
 
             Number n = data.getValue();
@@ -896,35 +895,6 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
     }
 
     /**
-     * Draws the arc to represent an interval.
-     *
-     * @param g2  the graphics device.
-     * @param meterArea  the drawing area.
-     * @param interval  the interval.
-     */
-    protected void drawArcForInterval(Graphics2D g2, Rectangle2D meterArea,
-                                      MeterInterval interval) {
-
-        double minValue = interval.getRange().getLowerBound();
-        double maxValue = interval.getRange().getUpperBound();
-        Paint outlinePaint = interval.getOutlinePaint();
-        Stroke outlineStroke = interval.getOutlineStroke();
-        Paint backgroundPaint = interval.getBackgroundPaint();
-
-        if (backgroundPaint != null) {
-            fillArc(g2, meterArea, minValue, maxValue, backgroundPaint, false);
-        }
-        if (outlinePaint != null) {
-            if (outlineStroke != null) {
-                drawArc(g2, meterArea, minValue, maxValue, outlinePaint,
-                        outlineStroke);
-            }
-            drawTick(g2, meterArea, minValue, true);
-            drawTick(g2, meterArea, maxValue, true);
-        }
-    }
-
-    /**
      * Draws an arc.
      *
      * @param g2  the graphics device.
@@ -934,7 +904,7 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
      * @param paint  the paint.
      * @param stroke  the stroke.
      */
-    protected void drawArc(Graphics2D g2, Rectangle2D area, double minValue,
+    public void drawArc(Graphics2D g2, Rectangle2D area, double minValue,
                            double maxValue, Paint paint, Stroke stroke) {
 
         double startAngle = valueToAngle(maxValue);
@@ -969,7 +939,7 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
      * @param dial  a flag that indicates whether the arc represents the whole
      *              dial.
      */
-    protected void fillArc(Graphics2D g2, Rectangle2D area,
+    public void fillArc(Graphics2D g2, Rectangle2D area,
             double minValue, double maxValue, Paint paint, boolean dial) {
 
         ParamChecks.nullNotPermitted(paint, "paint");
@@ -1057,7 +1027,7 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
      * @param value  the tick value.
      * @param label  a flag that controls whether or not a value label is drawn.
      */
-    protected void drawTick(Graphics2D g2, Rectangle2D meterArea,
+    public void drawTick(Graphics2D g2, Rectangle2D meterArea,
                             double value, boolean label) {
 
         double valueAngle = valueToAngle(value);

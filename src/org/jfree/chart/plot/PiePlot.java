@@ -3098,50 +3098,12 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
         double targetX = anchorX - record.getGap();
         double targetY = record.getAllocatedY();
 
-        TextBox tb = drawLeftRightLabel(g2, state, record, anchorX, targetX, targetY);
+        TextBox tb = state.drawLeftRightLabel(g2, record, anchorX, targetX, targetY, labelLinksVisible, labelLinkPaint, labelLinkStroke, labelLinkStyle);
         tb.draw(g2, (float) targetX, (float) targetY, RectangleAnchor.RIGHT);
 
     }
 
-	private TextBox drawLeftRightLabel(Graphics2D g2, PiePlotState state, PieLabelRecord record, double anchorX,
-			double targetX, double targetY) {
-		if (this.labelLinksVisible) {
-            double theta = record.getAngle();
-            double linkX = state.getPieCenterX() + Math.cos(theta)
-                    * state.getPieWRadius() * record.getLinkPercent();
-            double linkY = state.getPieCenterY() - Math.sin(theta)
-                    * state.getPieHRadius() * record.getLinkPercent();
-            double elbowX = state.getPieCenterX() + Math.cos(theta)
-                    * state.getLinkArea().getWidth() / 2.0;
-            double elbowY = state.getPieCenterY() - Math.sin(theta)
-                    * state.getLinkArea().getHeight() / 2.0;
-            double anchorY = elbowY;
-            g2.setPaint(this.labelLinkPaint);
-            g2.setStroke(this.labelLinkStroke);
-            PieLabelLinkStyle style = getLabelLinkStyle();
-            if (style.equals(PieLabelLinkStyle.STANDARD)) {
-                g2.draw(new Line2D.Double(linkX, linkY, elbowX, elbowY));
-                g2.draw(new Line2D.Double(anchorX, anchorY, elbowX, elbowY));
-                g2.draw(new Line2D.Double(anchorX, anchorY, targetX, targetY));
-            }
-            else if (style.equals(PieLabelLinkStyle.QUAD_CURVE)) {
-                QuadCurve2D q = new QuadCurve2D.Float();
-                q.setCurve(targetX, targetY, anchorX, anchorY, elbowX, elbowY);
-                g2.draw(q);
-                g2.draw(new Line2D.Double(elbowX, elbowY, linkX, linkY));
-            }
-            else if (style.equals(PieLabelLinkStyle.CUBIC_CURVE)) {
-                CubicCurve2D c = new CubicCurve2D .Float();
-                c.setCurve(targetX, targetY, anchorX, anchorY, elbowX, elbowY,
-                        linkX, linkY);
-                g2.draw(c);
-            }
-        }
-        TextBox tb = record.getLabel();
-		return tb;
-	}
-
-    /**
+	/**
      * Draws a section label on the right side of the pie chart.
      *
      * @param g2  the graphics device.
@@ -3155,64 +3117,9 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
         double targetX = anchorX + record.getGap();
         double targetY = record.getAllocatedY();
 
-        TextBox tb = drawLeftRightLabel(g2, state, record, anchorX, targetX, targetY);
+        TextBox tb = state.drawLeftRightLabel(g2, record, anchorX, targetX, targetY, labelLinksVisible, labelLinkPaint, labelLinkStroke, labelLinkStyle);
         tb.draw(g2, (float) targetX, (float) targetY, RectangleAnchor.LEFT);
 
-    }
-
-    /**
-     * Returns the center for the specified section.
-     * Checks to see if the section is exploded and recalculates the
-     * new center if so.
-     *
-     * @param state  PiePlotState
-     * @param key  section key.
-     *
-     * @return The center for the specified section.
-     *
-     * @since 1.0.14
-     */
-    protected Point2D getArcCenter(PiePlotState state, Comparable key) {
-        Point2D center = new Point2D.Double(state.getPieCenterX(), state
-            .getPieCenterY());
-
-        double ep = getExplodePercent(key);
-        double mep = getMaximumExplodePercent();
-        if (mep > 0.0) {
-            ep = ep / mep;
-        }
-        if (ep != 0) {
-            Rectangle2D pieArea = state.getPieArea();
-            Rectangle2D expPieArea = state.getExplodedPieArea();
-            double angle1, angle2;
-            Number n = this.dataset.getValue(key);
-            double value = n.doubleValue();
-
-            if (this.direction == Rotation.CLOCKWISE) {
-                angle1 = state.getLatestAngle();
-                angle2 = angle1 - value / state.getTotal() * 360.0;
-            } else if (this.direction == Rotation.ANTICLOCKWISE) {
-                angle1 = state.getLatestAngle();
-                angle2 = angle1 + value / state.getTotal() * 360.0;
-            } else {
-                throw new IllegalStateException("Rotation type not recognised.");
-            }
-            double angle = (angle2 - angle1);
-
-            Arc2D arc1 = new Arc2D.Double(pieArea, angle1, angle / 2,
-                    Arc2D.OPEN);
-            Point2D point1 = arc1.getEndPoint();
-            Arc2D.Double arc2 = new Arc2D.Double(expPieArea, angle1, angle / 2,
-                    Arc2D.OPEN);
-            Point2D point2 = arc2.getEndPoint();
-            double deltaX = (point1.getX() - point2.getX()) * ep;
-            double deltaY = (point1.getY() - point2.getY()) * ep;
-
-            center = new Point2D.Double(state.getPieCenterX() - deltaX,
-                     state.getPieCenterY() - deltaY);
-
-        }
-        return center;
     }
 
     /**
@@ -3234,7 +3141,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
         // the current pie segment...
         if (paint instanceof RadialGradientPaint) {
             RadialGradientPaint rgp = (RadialGradientPaint) paint;
-            Point2D center = getArcCenter(state, key);
+            Point2D center = state.getArcCenter(key, dataset, direction, this);
             float radius = (float) Math.max(state.getPieHRadius(), 
                     state.getPieWRadius());
             float[] fractions = rgp.getFractions();
