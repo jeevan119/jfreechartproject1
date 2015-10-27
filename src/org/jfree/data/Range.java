@@ -442,4 +442,18 @@ public strictfp class Range implements Serializable {
         return ("Range[" + this.lower + "," + this.upper + "]");
     }
 
+	/**
+	 * Returns the display length for the axis.
+	 * @param displayStart
+	 * @param displayEnd
+	 * @return  The display length.
+	 */
+	public double getDisplayLength(double displayStart, double displayEnd) {
+		if (displayStart < displayEnd) {
+			return (displayEnd - displayStart);
+		} else {
+			return (getUpperBound() - displayStart) + (displayEnd - getLowerBound());
+		}
+	}
+
 }

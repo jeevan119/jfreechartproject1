@@ -312,28 +312,13 @@ public class ModuloAxis extends NumberAxis {
     }
 
     /**
-     * Returns the display length for the axis.
-     *
-     * @return The display length.
-     */
-    private double getDisplayLength() {
-        if (this.displayStart < this.displayEnd) {
-            return (this.displayEnd - this.displayStart);
-        }
-        else {
-            return (this.fixedRange.getUpperBound() - this.displayStart)
-                + (this.displayEnd - this.fixedRange.getLowerBound());
-        }
-    }
-
-    /**
      * Returns the central value of the current display range.
      *
      * @return The central value.
      */
     private double getDisplayCentralValue() {
         return mapValueToFixedRange(this.displayStart 
-                + (getDisplayLength() / 2));
+                + (fixedRange.getDisplayLength(displayStart, displayEnd) / 2));
     }
 
     /**
@@ -366,7 +351,7 @@ public class ModuloAxis extends NumberAxis {
     public void resizeRange(double percent, double anchorValue) {
 
         if (percent > 0.0) {
-            double halfLength = getDisplayLength() * percent / 2;
+            double halfLength = fixedRange.getDisplayLength(displayStart, displayEnd) * percent / 2;
             setDisplayRange(anchorValue - halfLength, anchorValue + halfLength);
         }
         else {
