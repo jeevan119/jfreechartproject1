@@ -3,7 +3,6 @@ package org.jfree.chart.renderer.category;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
-import java.io.Serializable;
 import org.jfree.ui.RectangleEdge;
 
 public class Utility {

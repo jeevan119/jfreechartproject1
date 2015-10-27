@@ -121,7 +121,6 @@ import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.PlotRenderingInfo;
-import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.Range;
 import org.jfree.data.category.CategoryDataset;

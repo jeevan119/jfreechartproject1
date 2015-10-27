@@ -8,7 +8,6 @@ import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.general.ValueDataset;
 import org.jfree.ui.Layer;
 import java.util.Collection;
-import java.util.ArrayList;
 
 public abstract class IntermediatePlot extends Plot {
 	public IntermediatePlot() {

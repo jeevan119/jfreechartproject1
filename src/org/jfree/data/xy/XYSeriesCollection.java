@@ -81,7 +81,6 @@ import org.jfree.data.Range;
 import org.jfree.data.RangeInfo;
 import org.jfree.data.UnknownKeyException;
 import org.jfree.data.general.DatasetChangeEvent;
-import org.jfree.data.general.Series;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.util.PublicCloneable;
 

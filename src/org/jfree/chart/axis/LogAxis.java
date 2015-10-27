@@ -62,10 +62,7 @@
 package org.jfree.chart.axis;
 
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
-import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -81,7 +78,6 @@ import org.jfree.chart.util.LogFormat;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.Range;
 import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 
 /**

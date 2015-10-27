@@ -104,15 +104,11 @@
 package org.jfree.chart.axis;
 
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
-import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -124,7 +120,6 @@ import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.Range;
 import org.jfree.data.RangeType;
 import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 import org.jfree.util.ObjectUtilities;
 

@@ -5,7 +5,6 @@ import java.util.List;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import org.jfree.ui.RectangleEdge;
-import java.util.ArrayList;
 import org.jfree.ui.RectangleInsets;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;

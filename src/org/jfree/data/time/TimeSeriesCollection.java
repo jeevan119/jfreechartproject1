@@ -104,8 +104,6 @@ import org.jfree.data.DomainInfo;
 import org.jfree.data.DomainOrder;
 import org.jfree.data.Range;
 import org.jfree.data.general.DatasetChangeEvent;
-import org.jfree.data.general.Series;
-import org.jfree.data.xy.AbstractIntervalXYDataset;
 import org.jfree.data.xy.IntermediateAbstractIntervalXYDataset;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;

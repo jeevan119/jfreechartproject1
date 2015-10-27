@@ -54,8 +54,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.List;
-
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.CategoryAxis;
@@ -66,7 +64,6 @@ import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.block.Block;
 import org.jfree.chart.block.BlockContainer;
-import org.jfree.chart.block.LabelBlock;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.CombinedDomainXYPlot;

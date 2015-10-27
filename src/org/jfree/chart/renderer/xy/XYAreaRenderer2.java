@@ -98,7 +98,6 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.event.RendererChangeEvent;
-import org.jfree.chart.labels.XYSeriesLabelGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.PlotOrientation;

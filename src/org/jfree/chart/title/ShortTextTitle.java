@@ -44,7 +44,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.chart.block.LengthConstraintType;
 import org.jfree.chart.block.RectangleConstraint;
 import org.jfree.data.Range;
 import org.jfree.text.TextUtilities;
