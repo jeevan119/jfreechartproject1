@@ -122,7 +122,7 @@ public class GridArrangement implements Arrangement, Serializable {
                 return arrangeFN(container, g2, constraint);
             }
             else if (h == LengthConstraintType.FIXED) {
-                return arrangeFF(container, g2, constraint);
+                return constraint.arrangeFF(container, g2, columns, rows);
             }
             else if (h == LengthConstraintType.RANGE) {
                 // find optimum height and map to range
@@ -170,37 +170,7 @@ public class GridArrangement implements Arrangement, Serializable {
         double width = this.columns * maxW;
         double height = this.rows * maxH;
         RectangleConstraint c = new RectangleConstraint(width, height);
-        return arrangeFF(container, g2, c);
-    }
-
-    /**
-     * Arranges the container with a fixed overall width and height.
-     *
-     * @param container  the container (<code>null</code> not permitted).
-     * @param g2  the graphics device.
-     * @param constraint  the constraint (<code>null</code> not permitted).
-     *
-     * @return The size following the arrangement.
-     */
-    protected Size2D arrangeFF(BlockContainer container, Graphics2D g2,
-                               RectangleConstraint constraint) {
-        double width = constraint.getWidth() / this.columns;
-        double height = constraint.getHeight() / this.rows;
-        List blocks = container.getBlocks();
-        for (int c = 0; c < this.columns; c++) {
-            for (int r = 0; r < this.rows; r++) {
-                int index = r * this.columns + c;
-                if (index >= blocks.size()) {
-                    break;
-                }
-                Block b = (Block) blocks.get(index);
-                if (b != null) {
-                    b.setBounds(new Rectangle2D.Double(c * width, r * height,
-                            width, height));
-                }
-            }
-        }
-        return new Size2D(this.columns * width, this.rows * height);
+        return c.arrangeFF(container, g2, columns, rows);
     }
 
     /**
@@ -307,7 +277,7 @@ public class GridArrangement implements Arrangement, Serializable {
                         size1.getHeight());
                 RectangleConstraint cc = new RectangleConstraint(
                         size1.getWidth(), h);
-                return arrangeFF(container, g2, cc);
+                return cc.arrangeFF(container, g2, columns, rows);
             }
         }
         else {
@@ -317,7 +287,7 @@ public class GridArrangement implements Arrangement, Serializable {
                         size1.getWidth());
                 RectangleConstraint cc = new RectangleConstraint(w,
                         size1.getHeight());
-                return arrangeFF(container, g2, cc);
+                return cc.arrangeFF(container, g2, columns, rows);
 
             }
             else {
@@ -326,7 +296,7 @@ public class GridArrangement implements Arrangement, Serializable {
                 double h = constraint.getHeightRange().constrain(
                         size1.getHeight());
                 RectangleConstraint cc = new RectangleConstraint(w, h);
-                return arrangeFF(container, g2, cc);
+                return cc.arrangeFF(container, g2, columns, rows);
             }
         }
     }

@@ -414,7 +414,7 @@ public class AbstractBlock implements Cloneable, Serializable {
      *
      * @see #trimToContentHeight(double)
      */
-    protected double trimToContentWidth(double fixedWidth) {
+    public double trimToContentWidth(double fixedWidth) {
         double result = this.margin.trimWidth(fixedWidth);
         result = this.frame.getInsets().trimWidth(result);
         result = this.padding.trimWidth(result);
@@ -432,7 +432,7 @@ public class AbstractBlock implements Cloneable, Serializable {
      *
      * @see #trimToContentWidth(double)
      */
-    protected double trimToContentHeight(double fixedHeight) {
+    public double trimToContentHeight(double fixedHeight) {
         double result = this.margin.trimHeight(fixedHeight);
         result = this.frame.getInsets().trimHeight(result);
         result = this.padding.trimHeight(result);
@@ -458,40 +458,10 @@ public class AbstractBlock implements Cloneable, Serializable {
         Range hr = c.getHeightRange();
         double ww = trimToContentWidth(w);
         double hh = trimToContentHeight(h);
-        Range wwr = trimToContentWidth(wr);
-        Range hhr = trimToContentHeight(hr);
+        Range wwr = wr.trimToContentWidth(this);
+        Range hhr = hr.trimToContentHeight(this);
         return new RectangleConstraint(ww, wwr, c.getWidthConstraintType(),
             hh, hhr, c.getHeightConstraintType());
-    }
-
-    private Range trimToContentWidth(Range r) {
-        if (r == null) {
-            return null;
-        }
-        double lowerBound = 0.0;
-        double upperBound = Double.POSITIVE_INFINITY;
-        if (r.getLowerBound() > 0.0) {
-            lowerBound = trimToContentWidth(r.getLowerBound());
-        }
-        if (r.getUpperBound() < Double.POSITIVE_INFINITY) {
-            upperBound = trimToContentWidth(r.getUpperBound());
-        }
-        return new Range(lowerBound, upperBound);
-    }
-
-    private Range trimToContentHeight(Range r) {
-        if (r == null) {
-            return null;
-        }
-        double lowerBound = 0.0;
-        double upperBound = Double.POSITIVE_INFINITY;
-        if (r.getLowerBound() > 0.0) {
-            lowerBound = trimToContentHeight(r.getLowerBound());
-        }
-        if (r.getUpperBound() < Double.POSITIVE_INFINITY) {
-            upperBound = trimToContentHeight(r.getUpperBound());
-        }
-        return new Range(lowerBound, upperBound);
     }
 
     /**

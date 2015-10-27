@@ -63,6 +63,7 @@
 package org.jfree.data;
 
 import java.io.Serializable;
+import org.jfree.chart.block.AbstractBlock;
 import org.jfree.chart.util.ParamChecks;
 
 /**
@@ -454,6 +455,36 @@ public strictfp class Range implements Serializable {
 		} else {
 			return (getUpperBound() - displayStart) + (displayEnd - getLowerBound());
 		}
+	}
+
+	public Range trimToContentWidth(AbstractBlock abstractBlock) {
+		if (this == null) {
+			return null;
+		}
+		double lowerBound = 0.0;
+		double upperBound = Double.POSITIVE_INFINITY;
+		if (getLowerBound() > 0.0) {
+			lowerBound = abstractBlock.trimToContentWidth(getLowerBound());
+		}
+		if (getUpperBound() < Double.POSITIVE_INFINITY) {
+			upperBound = abstractBlock.trimToContentWidth(getUpperBound());
+		}
+		return new Range(lowerBound, upperBound);
+	}
+
+	public Range trimToContentHeight(AbstractBlock abstractBlock) {
+		if (this == null) {
+			return null;
+		}
+		double lowerBound = 0.0;
+		double upperBound = Double.POSITIVE_INFINITY;
+		if (getLowerBound() > 0.0) {
+			lowerBound = abstractBlock.trimToContentHeight(getLowerBound());
+		}
+		if (getUpperBound() < Double.POSITIVE_INFINITY) {
+			upperBound = abstractBlock.trimToContentHeight(getUpperBound());
+		}
+		return new Range(lowerBound, upperBound);
 	}
 
 }
