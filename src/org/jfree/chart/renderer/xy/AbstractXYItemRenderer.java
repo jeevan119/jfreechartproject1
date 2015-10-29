@@ -1002,27 +1002,7 @@ public abstract class AbstractXYItemRenderer extends AbstractRenderer
     public void drawDomainLine(Graphics2D g2, XYPlot plot, ValueAxis axis,
             Rectangle2D dataArea, double value, Paint paint, Stroke stroke) {
 
-        Range range = axis.getRange();
-        if (!range.contains(value)) {
-            return;
-        }
-
-        PlotOrientation orientation = plot.getOrientation();
-        Line2D line = null;
-        double v = axis.valueToJava2D(value, dataArea,
-                plot.getDomainAxisEdge());
-        if (orientation == PlotOrientation.HORIZONTAL) {
-            line = new Line2D.Double(dataArea.getMinX(), v, dataArea.getMaxX(),
-                    v);
-        }
-        else if (orientation == PlotOrientation.VERTICAL) {
-            line = new Line2D.Double(v, dataArea.getMinY(), v,
-                    dataArea.getMaxY());
-        }
-
-        g2.setPaint(paint);
-        g2.setStroke(stroke);
-        g2.draw(line);
+        axis.drawDomainLine(g2, plot, dataArea, value, paint, stroke);
 
     }
 

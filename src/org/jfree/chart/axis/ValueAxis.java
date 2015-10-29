@@ -115,8 +115,10 @@ package org.jfree.chart.axis;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.font.LineMetrics;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
@@ -130,6 +132,8 @@ import java.util.List;
 
 import org.jfree.chart.event.AxisChangeEvent;
 import org.jfree.chart.plot.Plot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.Range;
 import org.jfree.io.SerialUtilities;
@@ -1740,5 +1744,34 @@ public abstract class ValueAxis extends Axis
         this.leftArrow = SerialUtilities.readShape(stream);
         this.rightArrow = SerialUtilities.readShape(stream);
     }
+
+	/**
+	 * Draws a line perpendicular to the domain axis.
+	 * @param g2   the graphics device.
+	 * @param plot   the plot.
+	 * @param dataArea   the area for plotting data (not yet adjusted for any 3D effect).
+	 * @param value   the value at which the grid line should be drawn.
+	 * @param paint   the paint (<code>null</code> not permitted).
+	 * @param stroke   the stroke (<code>null</code> not permitted).
+	 * @since  1.0.5
+	 */
+	public void drawDomainLine(Graphics2D g2, XYPlot plot, Rectangle2D dataArea, double value, Paint paint,
+			Stroke stroke) {
+		Range range = getRange();
+		if (!range.contains(value)) {
+			return;
+		}
+		PlotOrientation orientation = plot.getOrientation();
+		Line2D line = null;
+		double v = valueToJava2D(value, dataArea, plot.getDomainAxisEdge());
+		if (orientation == PlotOrientation.HORIZONTAL) {
+			line = new Line2D.Double(dataArea.getMinX(), v, dataArea.getMaxX(), v);
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			line = new Line2D.Double(v, dataArea.getMinY(), v, dataArea.getMaxY());
+		}
+		g2.setPaint(paint);
+		g2.setStroke(stroke);
+		g2.draw(line);
+	}
 
 }
