@@ -487,4 +487,16 @@ public strictfp class Range implements Serializable {
 		return new Range(lowerBound, upperBound);
 	}
 
+	/**
+	 * Translates a data value to an angle on the dial.
+	 * @param value   the value.
+	 * @param meterAngle
+	 * @return  The angle on the dial.
+	 */
+	public double valueToAngle(double value, int meterAngle) {
+		value = value - getLowerBound();
+		double baseAngle = 180 + ((meterAngle - 180) / 2);
+		return baseAngle - ((value / getLength()) * meterAngle);
+	}
+
 }

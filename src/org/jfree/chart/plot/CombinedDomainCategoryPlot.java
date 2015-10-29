@@ -238,26 +238,6 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
     }
 
     /**
-     * Returns the subplot (if any) that contains the (x, y) point (specified
-     * in Java2D space).
-     *
-     * @param info  the chart rendering info (<code>null</code> not permitted).
-     * @param source  the source point (<code>null</code> not permitted).
-     *
-     * @return A subplot (possibly <code>null</code>).
-     */
-    public CategoryPlot findSubplot(PlotRenderingInfo info, Point2D source) {
-        ParamChecks.nullNotPermitted(info, "info");
-        ParamChecks.nullNotPermitted(source, "source");
-        CategoryPlot result = null;
-        int subplotIndex = info.getSubplotIndex(source);
-        if (subplotIndex >= 0) {
-            result =  (CategoryPlot) this.subplots.get(subplotIndex);
-        }
-        return result;
-    }
-
-    /**
      * Multiplies the range on the range axis/axes by the specified factor.
      *
      * @param factor  the zoom factor.
@@ -282,7 +262,7 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
     public void zoomRangeAxes(double factor, PlotRenderingInfo info,
                               Point2D source, boolean useAnchor) {
         // delegate 'info' and 'source' argument checks...
-        CategoryPlot subplot = findSubplot(info, source);
+        CategoryPlot subplot = info.findSubplot(source, subplots);
         if (subplot != null) {
             subplot.zoomRangeAxes(factor, info, source, useAnchor);
         }
@@ -309,7 +289,7 @@ public class CombinedDomainCategoryPlot extends CategoryPlot
     public void zoomRangeAxes(double lowerPercent, double upperPercent,
                               PlotRenderingInfo info, Point2D source) {
         // delegate 'info' and 'source' argument checks...
-        CategoryPlot subplot = findSubplot(info, source);
+        CategoryPlot subplot = info.findSubplot(source, subplots);
         if (subplot != null) {
             subplot.zoomRangeAxes(lowerPercent, upperPercent, info, source);
         }

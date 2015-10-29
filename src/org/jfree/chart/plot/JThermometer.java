@@ -177,16 +177,6 @@ public class JThermometer extends JPanel implements Serializable {
     }
 
     /**
-     * Sets the location at which the temperature value is displayed.
-     *
-     * @param loc  the location.
-     */
-    public void setValueLocation(int loc) {
-        this.plot.setValueLocation(loc);
-        this.panel.repaint();
-    }
-
-    /**
      * Sets the value paint.
      *
      * @param paint  the paint.
@@ -230,17 +220,6 @@ public class JThermometer extends JPanel implements Serializable {
     }
 
     /**
-     * Sets the unit type.
-     *
-     * @param i  the unit type.
-     */
-    public void setUnits(int i) {
-        if (this.plot != null) {
-            this.plot.setUnits(i);
-        }
-    }
-
-    /**
      * Sets the outline paint.
      *
      * @param p  the paint.
@@ -280,17 +259,6 @@ public class JThermometer extends JPanel implements Serializable {
         }
         if (this.panel != null) {
             this.panel.setBackground(bg);
-        }
-    }
-
-    /**
-     * Sets the value font.
-     *
-     * @param f  the font.
-     */
-    public void setValueFont(Font f) {
-        if (this.plot != null) {
-            this.plot.setValueFont(f);
         }
     }
 

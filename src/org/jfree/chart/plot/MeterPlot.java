@@ -849,7 +849,7 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
 
                     double radius = (meterArea.getWidth() / 2)
                                     + DEFAULT_BORDER_SIZE + 15;
-                    double valueAngle = valueToAngle(value);
+                    double valueAngle = range.valueToAngle(value, meterAngle);
                     double valueP1 = meterMiddleX
                             + (radius * Math.cos(Math.PI * (valueAngle / 180)));
                     double valueP2 = meterMiddleY
@@ -907,8 +907,8 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
     public void drawArc(Graphics2D g2, Rectangle2D area, double minValue,
                            double maxValue, Paint paint, Stroke stroke) {
 
-        double startAngle = valueToAngle(maxValue);
-        double endAngle = valueToAngle(minValue);
+        double startAngle = range.valueToAngle(maxValue, meterAngle);
+        double endAngle = range.valueToAngle(minValue, meterAngle);
         double extent = endAngle - startAngle;
 
         double x = area.getX();
@@ -943,8 +943,8 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
             double minValue, double maxValue, Paint paint, boolean dial) {
 
         ParamChecks.nullNotPermitted(paint, "paint");
-        double startAngle = valueToAngle(maxValue);
-        double endAngle = valueToAngle(minValue);
+        double startAngle = range.valueToAngle(maxValue, meterAngle);
+        double endAngle = range.valueToAngle(minValue, meterAngle);
         double extent = endAngle - startAngle;
 
         double x = area.getX();
@@ -977,19 +977,6 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
         Arc2D.Double arc = new Arc2D.Double(x, y, w, h, startAngle, extent,
                 joinType);
         g2.fill(arc);
-    }
-
-    /**
-     * Translates a data value to an angle on the dial.
-     *
-     * @param value  the value.
-     *
-     * @return The angle on the dial.
-     */
-    public double valueToAngle(double value) {
-        value = value - this.range.getLowerBound();
-        double baseAngle = 180 + ((this.meterAngle - 180) / 2);
-        return baseAngle - ((value / this.range.getLength()) * this.meterAngle);
     }
 
     /**
@@ -1030,7 +1017,7 @@ public class MeterPlot extends IntermediatePlot implements Serializable, Cloneab
     public void drawTick(Graphics2D g2, Rectangle2D meterArea,
                             double value, boolean label) {
 
-        double valueAngle = valueToAngle(value);
+        double valueAngle = range.valueToAngle(value, meterAngle);
 
         double meterMiddleX = meterArea.getCenterX();
         double meterMiddleY = meterArea.getCenterY();

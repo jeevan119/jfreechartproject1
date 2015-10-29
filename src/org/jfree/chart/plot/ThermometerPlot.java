@@ -114,7 +114,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.NumberAxis;
@@ -1801,6 +1801,36 @@ public class ThermometerPlot extends IntermediatePlot implements ValueAxisPlot,
 
 	public void applyToPlot(StandardChartTheme standardChartTheme) {
 		standardChartTheme.applyToThermometerPlot(this);
+	}
+
+	/**
+	 * Sets the location at which the temperature value is displayed.
+	 * @param loc   the location.
+	 * @param panel
+	 */
+	public void setValueLocation(int loc, ChartPanel panel) {
+		setValueLocation(loc);
+		panel.repaint();
+	}
+
+	/**
+	 * Sets the unit type.
+	 * @param i   the unit type.
+	 */
+	public void setUnitsJThermometer(int i) {
+		if (this != null) {
+			setUnits(i);
+		}
+	}
+
+	/**
+	 * Sets the value font.
+	 * @param f   the font.
+	 */
+	public void setValueFontJThermometer(Font f) {
+		if (this != null) {
+			setValueFont(f);
+		}
 	}
 
 }

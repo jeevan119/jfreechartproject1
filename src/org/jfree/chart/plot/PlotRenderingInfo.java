@@ -287,4 +287,21 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
         this.plotArea = (Rectangle2D) SerialUtilities.readShape(stream);
     }
 
+	/**
+	 * Returns the subplot (if any) that contains the (x, y) point (specified in Java2D space).
+	 * @param source   the source point (<code>null</code> not permitted).
+	 * @param subplots
+	 * @return  A subplot (possibly <code>null</code>).
+	 */
+	public CategoryPlot findSubplot(Point2D source, List subplots) {
+		ParamChecks.nullNotPermitted(this, "info");
+		ParamChecks.nullNotPermitted(source, "source");
+		CategoryPlot result = null;
+		int subplotIndex = getSubplotIndex(source);
+		if (subplotIndex >= 0) {
+			result = (CategoryPlot) subplots.get(subplotIndex);
+		}
+		return result;
+	}
+
 }
