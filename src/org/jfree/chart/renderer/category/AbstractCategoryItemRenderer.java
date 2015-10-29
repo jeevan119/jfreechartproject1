@@ -1350,19 +1350,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
             int datasetIndex,
             double transX, double transY, PlotOrientation orientation) {
 
-        ParamChecks.nullNotPermitted(orientation, "orientation");
-
-        if (crosshairState != null) {
-            if (this.plot.isRangeCrosshairLockedOnData()) {
-                // both axes
-                crosshairState.updateCrosshairPoint(rowKey, columnKey, value,
-                        datasetIndex, transX, transY, orientation);
-            }
-            else {
-                crosshairState.updateCrosshairX(rowKey, columnKey,
-                        datasetIndex, transX, orientation);
-            }
-        }
+        crosshairState.updateCrosshairValues(rowKey, columnKey, value, datasetIndex, transX, transY, orientation, plot);
     }
 
     /**
@@ -1534,27 +1522,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
      * @return A domain axis.
      */
     protected CategoryAxis getDomainAxis(CategoryPlot plot, int index) {
-        CategoryAxis result = plot.getDomainAxis(index);
-        if (result == null) {
-            result = plot.getDomainAxis();
-        }
-        return result;
-    }
-
-    /**
-     * Returns a range axis for a plot.
-     *
-     * @param plot  the plot.
-     * @param index  the axis index.
-     *
-     * @return A range axis.
-     */
-    protected ValueAxis getRangeAxis(CategoryPlot plot, int index) {
-        ValueAxis result = plot.getRangeAxis(index);
-        if (result == null) {
-            result = plot.getRangeAxis();
-        }
-        return result;
+        return plot.getDomainAxisAbstractCategoryItemRenderer(index);
     }
 
     /**

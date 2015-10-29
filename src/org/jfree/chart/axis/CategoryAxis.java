@@ -123,7 +123,10 @@ import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.event.AxisChangeEvent;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.Plot;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.PlotRenderingInfo;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.CategoryItemRendererState;
 import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.io.SerialUtilities;
@@ -1540,5 +1543,56 @@ public class CategoryAxis extends Axis implements Cloneable, Serializable {
         return drawCategoryLabels(g2, dataArea, dataArea, edge, state,
                 plotState);
     }
+
+	/**
+	 * Calculates the available space for each series.
+	 * @param space   the space along the entire axis (in Java2D units).
+	 * @param categories   the number of categories.
+	 * @param series   the number of series.
+	 * @param itemMargin
+	 * @return  The width of one series.
+	 */
+	public double calculateSeriesWidth(double space, int categories, int series, double itemMargin) {
+		double factor = 1.0 - itemMargin - getLowerMargin() - getUpperMargin();
+		if (categories > 1) {
+			factor = factor - getCategoryMargin();
+		}
+		return (space * factor) / (categories * series);
+	}
+
+	/**
+	 * Calculates the coordinate of the first "side" of a bar.  This will be the minimum x-coordinate for a vertical bar, and the minimum y-coordinate for a horizontal bar.
+	 * @param plot   the plot.
+	 * @param orientation   the plot orientation.
+	 * @param dataArea   the data area.
+	 * @param state   the renderer state (has the bar width precalculated).
+	 * @param row   the row index.
+	 * @param column   the column index.
+	 * @param itemMargin
+	 * @param barRenderer
+	 * @return  The coordinate.
+	 */
+	public double calculateBarW0(CategoryPlot plot, PlotOrientation orientation, Rectangle2D dataArea,
+			CategoryItemRendererState state, int row, int column, double itemMargin, BarRenderer barRenderer) {
+		double space;
+		if (orientation == PlotOrientation.HORIZONTAL) {
+			space = dataArea.getHeight();
+		} else {
+			space = dataArea.getWidth();
+		}
+		double barW0 = getCategoryStart(column, barRenderer.getColumnCount(), dataArea, plot.getDomainAxisEdge());
+		int seriesCount = state.getVisibleSeriesCount() >= 0 ? state.getVisibleSeriesCount()
+				: barRenderer.getRowCount();
+		int categoryCount = barRenderer.getColumnCount();
+		if (seriesCount > 1) {
+			double seriesGap = space * itemMargin / (categoryCount * (seriesCount - 1));
+			double seriesW = calculateSeriesWidth(space, categoryCount, seriesCount, itemMargin);
+			barW0 = barW0 + row * (seriesW + seriesGap) + (seriesW / 2.0) - (state.getBarWidth() / 2.0);
+		} else {
+			barW0 = getCategoryMiddle(column, barRenderer.getColumnCount(), dataArea, plot.getDomainAxisEdge())
+					- state.getBarWidth() / 2.0;
+		}
+		return barW0;
+	}
 
 }

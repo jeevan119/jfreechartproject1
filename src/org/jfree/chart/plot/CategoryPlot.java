@@ -5166,4 +5166,30 @@ public class CategoryPlot extends IntermediateIntermediatePlot implements ValueA
 		standardChartTheme.applyToCategoryPlot(this);
 	}
 
+	/**
+	 * Returns a range axis for a plot.
+	 * @param index   the axis index.
+	 * @return  A range axis.
+	 */
+	public ValueAxis getRangeAxisAbstractCategoryItemRenderer(int index) {
+		ValueAxis result = getRangeAxis(index);
+		if (result == null) {
+			result = getRangeAxis();
+		}
+		return result;
+	}
+
+	/**
+	 * Returns a domain axis for a plot.
+	 * @param index   the axis index.
+	 * @return  A domain axis.
+	 */
+	public CategoryAxis getDomainAxisAbstractCategoryItemRenderer(int index) {
+		CategoryAxis result = getDomainAxis(index);
+		if (result == null) {
+			result = getDomainAxis();
+		}
+		return result;
+	}
+
 }

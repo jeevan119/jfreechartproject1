@@ -826,33 +826,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer
             PlotOrientation orientation, Rectangle2D dataArea, 
             CategoryAxis domainAxis, CategoryItemRendererState state,
             int row, int column) {
-        // calculate bar width...
-        double space;
-        if (orientation == PlotOrientation.HORIZONTAL) {
-            space = dataArea.getHeight();
-        }
-        else {
-            space = dataArea.getWidth();
-        }
-        double barW0 = domainAxis.getCategoryStart(column, getColumnCount(),
-                dataArea, plot.getDomainAxisEdge());
-        int seriesCount = state.getVisibleSeriesCount() >= 0
-                ? state.getVisibleSeriesCount() : getRowCount();
-        int categoryCount = getColumnCount();
-        if (seriesCount > 1) {
-            double seriesGap = space * getItemMargin()
-                               / (categoryCount * (seriesCount - 1));
-            double seriesW = calculateSeriesWidth(space, domainAxis,
-                    categoryCount, seriesCount);
-            barW0 = barW0 + row * (seriesW + seriesGap)
-                          + (seriesW / 2.0) - (state.getBarWidth() / 2.0);
-        }
-        else {
-            barW0 = domainAxis.getCategoryMiddle(column, getColumnCount(),
-                    dataArea, plot.getDomainAxisEdge()) - state.getBarWidth()
-                    / 2.0;
-        }
-        return barW0;
+        return domainAxis.calculateBarW0(plot, orientation, dataArea, state, row, column, itemMargin, this);
     }
 
     /**
@@ -999,8 +973,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 
         final double value = dataValue.doubleValue();
         PlotOrientation orientation = plot.getOrientation();
-        double barW0 = calculateBarW0(plot, orientation, dataArea, domainAxis,
-                state, visibleRow, column);
+        double barW0 = domainAxis.calculateBarW0(plot, orientation, dataArea, state, visibleRow, column, itemMargin, this);
         double[] barL0L1 = calculateBarL0L1(value);
         if (barL0L1 == null) {
             return;  // the bar is not visible
@@ -1095,12 +1068,7 @@ public class BarRenderer extends AbstractCategoryItemRenderer
      */
     protected double calculateSeriesWidth(double space, CategoryAxis axis,
                                           int categories, int series) {
-        double factor = 1.0 - getItemMargin() - axis.getLowerMargin()
-                            - axis.getUpperMargin();
-        if (categories > 1) {
-            factor = factor - axis.getCategoryMargin();
-        }
-        return (space * factor) / (categories * series);
+        return axis.calculateSeriesWidth(space, categories, series, itemMargin);
     }
 
     /**

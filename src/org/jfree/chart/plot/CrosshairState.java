@@ -52,6 +52,7 @@
 package org.jfree.chart.plot;
 
 import java.awt.geom.Point2D;
+import org.jfree.chart.util.ParamChecks;
 
 /**
  * Maintains state information about crosshairs on a plot between successive
@@ -497,5 +498,35 @@ public class CrosshairState {
     public int getRangeAxisIndex() {
         return this.rangeAxisIndex;
     }
+
+	/**
+	 * Considers the current (x, y) coordinate and updates the crosshair point if it meets the criteria (usually means the (x, y) coordinate is the closest to the anchor point so far).
+	 * @param x   the x-value (in data space).
+	 * @param y   the y-value (in data space).
+	 * @param domainAxisIndex   the index of the domain axis for the point.
+	 * @param rangeAxisIndex   the index of the range axis for the point.
+	 * @param transX   the x-value translated to Java2D space.
+	 * @param transY   the y-value translated to Java2D space.
+	 * @param orientation   the plot orientation (<code>null</code> not permitted).
+	 * @since  1.0.4
+	 * @param plot
+	 */
+	public void updateCrosshairValues(double x, double y, int domainAxisIndex, int rangeAxisIndex, double transX,
+			double transY, PlotOrientation orientation, XYPlot plot) {
+		ParamChecks.nullNotPermitted(orientation, "orientation");
+		if (this != null) {
+			if (plot.isDomainCrosshairLockedOnData()) {
+				if (plot.isRangeCrosshairLockedOnData()) {
+					updateCrosshairPoint(x, y, domainAxisIndex, rangeAxisIndex, transX, transY, orientation);
+				} else {
+					updateCrosshairX(x, domainAxisIndex);
+				}
+			} else {
+				if (plot.isRangeCrosshairLockedOnData()) {
+					updateCrosshairY(y, rangeAxisIndex);
+				}
+			}
+		}
+	}
 
 }

@@ -43,6 +43,7 @@ package org.jfree.chart.plot;
 import java.awt.geom.Point2D;
 
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.util.ParamChecks;
 
 /**
  * Represents state information for the crosshairs in a {@link CategoryPlot}.
@@ -177,5 +178,29 @@ public class CategoryCrosshairState extends CrosshairState {
         }
 
     }
+
+	/**
+	 * Considers the current (x, y) coordinate and updates the crosshair point if it meets the criteria (usually means the (x, y) coordinate is the closest to the anchor point so far).
+	 * @param rowKey   the row key.
+	 * @param columnKey   the column key.
+	 * @param value   the data value.
+	 * @param datasetIndex   the dataset index.
+	 * @param transX   the x-value translated to Java2D space.
+	 * @param transY   the y-value translated to Java2D space.
+	 * @param orientation   the plot orientation (<code>null</code> not permitted).
+	 * @since  1.0.11
+	 * @param plot
+	 */
+	public void updateCrosshairValues(Comparable rowKey, Comparable columnKey, double value, int datasetIndex,
+			double transX, double transY, PlotOrientation orientation, CategoryPlot plot) {
+		ParamChecks.nullNotPermitted(orientation, "orientation");
+		if (this != null) {
+			if (plot.isRangeCrosshairLockedOnData()) {
+				updateCrosshairPoint(rowKey, columnKey, value, datasetIndex, transX, transY, orientation);
+			} else {
+				updateCrosshairX(rowKey, columnKey, datasetIndex, transX, orientation);
+			}
+		}
+	}
 
 }
