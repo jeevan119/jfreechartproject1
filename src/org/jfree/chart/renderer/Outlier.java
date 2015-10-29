@@ -210,4 +210,17 @@ public class Outlier implements Comparable {
         return "{" + getX() + "," + getY() + "}";
     }
 
+	/**
+	 * Returns <code>true</code> if the outlier overlaps, and <code>false</code> otherwise.
+	 * @param averagedOutlier
+	 * @return  A boolean.
+	 */
+	public boolean isOverlapped(Outlier averagedOutlier) {
+		if (this == null) {
+			return false;
+		}
+		boolean result = overlaps(averagedOutlier);
+		return result;
+	}
+
 }

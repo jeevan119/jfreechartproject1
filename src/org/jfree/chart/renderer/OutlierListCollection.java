@@ -143,7 +143,7 @@ public class OutlierListCollection {
                  iterator.hasNext();) {
                 OutlierList list = (OutlierList) iterator.next();
                 if (list.isOverlapped(outlier)) {
-                    updated = updateOutlierList(list, outlier);
+                    updated = list.updateOutlierList(outlier);
                 }
             }
             if (!updated) {
@@ -162,25 +162,6 @@ public class OutlierListCollection {
      */
     public Iterator iterator() {
         return this.outlierLists.iterator();
-    }
-
-
-    /**
-     * Updates the outlier list by adding the outlier to the end of the list and
-     * setting the averaged outlier to the average x and y coordinnate values
-     * of the outliers in the list.
-     *
-     * @param list  the outlier list to be updated.
-     * @param outlier  the outlier to be added
-     *
-     * @return <tt>true</tt> (as per the general contract of Collection.add).
-     */
-    private boolean updateOutlierList(OutlierList list, Outlier outlier) {
-        boolean result = false;
-        result = list.add(outlier);
-        list.updateAveragedOutlier();
-        list.setMultiple(true);
-        return result;
     }
 
 }
