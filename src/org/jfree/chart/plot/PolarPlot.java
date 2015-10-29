@@ -1154,27 +1154,6 @@ public class PolarPlot extends Plot implements ValueAxisPlot, Zoomable,
     }
 
     /**
-     * Generates a list of tick values for the angular tick marks.
-     *
-     * @return A list of {@link NumberTick} instances.
-     *
-     * @since 1.0.10
-     */
-    protected List refreshAngleTicks() {
-        List ticks = new ArrayList();
-        for (double currentTickVal = 0.0; currentTickVal < 360.0;
-                currentTickVal += this.angleTickUnit.getSize()) {
-
-            TextAnchor ta = calculateTextAnchor(currentTickVal);
-            NumberTick tick = new NumberTick(new Double(currentTickVal),
-                this.angleTickUnit.valueToString(currentTickVal),
-                ta, TextAnchor.CENTER, 0.0);
-            ticks.add(tick);
-        }
-        return ticks;
-    }
-
-    /**
      * Calculate the text position for the given degrees.
      *
      * @param angleDegrees  the angle in degrees.
@@ -1182,7 +1161,7 @@ public class PolarPlot extends Plot implements ValueAxisPlot, Zoomable,
      * @return The optimal text anchor.
      * @since 1.0.14
      */
-    protected TextAnchor calculateTextAnchor(double angleDegrees) {
+    public TextAnchor calculateTextAnchor(double angleDegrees) {
         TextAnchor ta = TextAnchor.CENTER;
 
         // normalize angle
@@ -1419,7 +1398,7 @@ public class PolarPlot extends Plot implements ValueAxisPlot, Zoomable,
         g2.clip(dataArea);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
                 getForegroundAlpha()));
-        this.angleTicks = refreshAngleTicks();
+        this.angleTicks = angleTickUnit.refreshAngleTicks(this);
         drawGridlines(g2, dataArea, this.angleTicks, state.getTicks());
         render(g2, dataArea, info);
         g2.setClip(originalClip);

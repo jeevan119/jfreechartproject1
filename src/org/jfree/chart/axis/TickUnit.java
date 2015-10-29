@@ -47,6 +47,10 @@
 package org.jfree.chart.axis;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.jfree.chart.plot.PolarPlot;
+import org.jfree.ui.TextAnchor;
 
 /**
  * Base class representing a tick unit.  This determines the spacing of the
@@ -196,5 +200,22 @@ public abstract class TickUnit implements Comparable, Serializable {
                 : 0L;
         return (int) (temp ^ (temp >>> 32));
     }
+
+	/**
+	 * Generates a list of tick values for the angular tick marks.
+	 * @param polarPlot
+	 * @return  A list of  {@link NumberTick}  instances.
+	 * @since  1.0.10
+	 */
+	public List refreshAngleTicks(PolarPlot polarPlot) {
+		List ticks = new ArrayList();
+		for (double currentTickVal = 0.0; currentTickVal < 360.0; currentTickVal += getSize()) {
+			TextAnchor ta = polarPlot.calculateTextAnchor(currentTickVal);
+			NumberTick tick = new NumberTick(new Double(currentTickVal), valueToString(currentTickVal), ta,
+					TextAnchor.CENTER, 0.0);
+			ticks.add(tick);
+		}
+		return ticks;
+	}
 
 }

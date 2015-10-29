@@ -254,82 +254,9 @@ public class WaferMapPlot extends Plot implements RendererChangeListener,
         RectangleInsets insets = getInsets();
         insets.trim(area);
 
-        drawChipGrid(g2, area);
+        dataset.drawChipGrid(g2, area, renderer, this);
         drawWaferEdge(g2, area);
 
-    }
-
-    /**
-     * Calculates and draws the chip locations on the wafer.
-     *
-     * @param g2  the graphics device.
-     * @param plotArea  the plot area.
-     */
-    protected void drawChipGrid(Graphics2D g2, Rectangle2D plotArea) {
-
-        Shape savedClip = g2.getClip();
-        g2.setClip(getWaferEdge(plotArea));
-        Rectangle2D chip = new Rectangle2D.Double();
-        int xchips = 35;
-        int ychips = 20;
-        double space = 1d;
-        if (this.dataset != null) {
-            xchips = this.dataset.getMaxChipX() + 2;
-            ychips = this.dataset.getMaxChipY() + 2;
-            space = this.dataset.getChipSpace();
-        }
-        double startX = plotArea.getX();
-        double startY = plotArea.getY();
-        double chipWidth = 1d;
-        double chipHeight = 1d;
-        if (plotArea.getWidth() != plotArea.getHeight()) {
-            double major, minor;
-            if (plotArea.getWidth() > plotArea.getHeight()) {
-                major = plotArea.getWidth();
-                minor = plotArea.getHeight();
-            }
-            else {
-                major = plotArea.getHeight();
-                minor = plotArea.getWidth();
-            }
-            //set upperLeft point
-            if (plotArea.getWidth() == minor) { // x is minor
-                startY += (major - minor) / 2;
-                chipWidth = (plotArea.getWidth() - (space * xchips - 1))
-                    / xchips;
-                chipHeight = (plotArea.getWidth() - (space * ychips - 1))
-                    / ychips;
-            }
-            else { // y is minor
-                startX += (major - minor) / 2;
-                chipWidth = (plotArea.getHeight() - (space * xchips - 1))
-                    / xchips;
-                chipHeight = (plotArea.getHeight() - (space * ychips - 1))
-                    / ychips;
-            }
-        }
-
-        for (int x = 1; x <= xchips; x++) {
-            double upperLeftX = (startX - chipWidth) + (chipWidth * x)
-                + (space * (x - 1));
-            for (int y = 1; y <= ychips; y++) {
-                double upperLeftY = (startY - chipHeight) + (chipHeight * y)
-                    + (space * (y - 1));
-                chip.setFrame(upperLeftX, upperLeftY, chipWidth, chipHeight);
-                g2.setColor(Color.white);
-                if (this.dataset.getChipValue(x - 1, ychips - y - 1) != null) {
-                    g2.setPaint(
-                        this.renderer.getChipColor(
-                            this.dataset.getChipValue(x - 1, ychips - y - 1)
-                        )
-                    );
-                }
-                g2.fill(chip);
-                g2.setColor(Color.lightGray);
-                g2.draw(chip);
-            }
-        }
-        g2.setClip(savedClip);
     }
 
     /**
@@ -339,7 +266,7 @@ public class WaferMapPlot extends Plot implements RendererChangeListener,
      *
      * @return The wafer edge.
      */
-    protected Ellipse2D getWaferEdge(Rectangle2D plotArea) {
+    public Ellipse2D getWaferEdge(Rectangle2D plotArea) {
         Ellipse2D edge = new Ellipse2D.Double();
         double diameter = plotArea.getWidth();
         double upperLeftX = plotArea.getX();

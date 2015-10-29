@@ -43,9 +43,14 @@
 
 package org.jfree.data.general;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 import java.util.Set;
 import java.util.TreeSet;
-
+import org.jfree.chart.plot.WaferMapPlot;
+import org.jfree.chart.renderer.WaferMapRenderer;
 import org.jfree.data.DefaultKeyedValues2D;
 
 /**
@@ -310,5 +315,65 @@ public class WaferMapDataset extends AbstractDataset {
     public void setChipSpace(double space) {
         this.chipSpace = space;
     }
+
+	/**
+	 * Calculates and draws the chip locations on the wafer.
+	 * @param g2   the graphics device.
+	 * @param plotArea   the plot area.
+	 * @param renderer
+	 * @param waferMapPlot
+	 */
+	public void drawChipGrid(Graphics2D g2, Rectangle2D plotArea, WaferMapRenderer renderer,
+			WaferMapPlot waferMapPlot) {
+		Shape savedClip = g2.getClip();
+		g2.setClip(waferMapPlot.getWaferEdge(plotArea));
+		Rectangle2D chip = new Rectangle2D.Double();
+		int xchips = 35;
+		int ychips = 20;
+		double space = 1d;
+		if (this != null) {
+			xchips = getMaxChipX() + 2;
+			ychips = getMaxChipY() + 2;
+			space = getChipSpace();
+		}
+		double startX = plotArea.getX();
+		double startY = plotArea.getY();
+		double chipWidth = 1d;
+		double chipHeight = 1d;
+		if (plotArea.getWidth() != plotArea.getHeight()) {
+			double major, minor;
+			if (plotArea.getWidth() > plotArea.getHeight()) {
+				major = plotArea.getWidth();
+				minor = plotArea.getHeight();
+			} else {
+				major = plotArea.getHeight();
+				minor = plotArea.getWidth();
+			}
+			if (plotArea.getWidth() == minor) {
+				startY += (major - minor) / 2;
+				chipWidth = (plotArea.getWidth() - (space * xchips - 1)) / xchips;
+				chipHeight = (plotArea.getWidth() - (space * ychips - 1)) / ychips;
+			} else {
+				startX += (major - minor) / 2;
+				chipWidth = (plotArea.getHeight() - (space * xchips - 1)) / xchips;
+				chipHeight = (plotArea.getHeight() - (space * ychips - 1)) / ychips;
+			}
+		}
+		for (int x = 1; x <= xchips; x++) {
+			double upperLeftX = (startX - chipWidth) + (chipWidth * x) + (space * (x - 1));
+			for (int y = 1; y <= ychips; y++) {
+				double upperLeftY = (startY - chipHeight) + (chipHeight * y) + (space * (y - 1));
+				chip.setFrame(upperLeftX, upperLeftY, chipWidth, chipHeight);
+				g2.setColor(Color.white);
+				if (getChipValue(x - 1, ychips - y - 1) != null) {
+					g2.setPaint(renderer.getChipColor(getChipValue(x - 1, ychips - y - 1)));
+				}
+				g2.fill(chip);
+				g2.setColor(Color.lightGray);
+				g2.draw(chip);
+			}
+		}
+		g2.setClip(savedClip);
+	}
 
 }
