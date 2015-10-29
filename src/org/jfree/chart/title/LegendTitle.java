@@ -454,58 +454,8 @@ public class LegendTitle extends Title
     }
 
     private void addItemBlock(LegendItem item) {
-        Block block = createLegendItemBlock(item);
+        Block block = item.createLegendItemBlock(legendItemGraphicPadding, legendItemGraphicEdge, itemFont, itemPaint, itemLabelPadding, legendItemGraphicAnchor, legendItemGraphicLocation);
         this.items.add(block);
-    }
-
-    /**
-     * Creates a legend item block.
-     *
-     * @param item  the legend item.
-     *
-     * @return The block.
-     */
-    protected Block createLegendItemBlock(LegendItem item) {
-        BlockContainer result;
-        LegendGraphic lg = new LegendGraphic(item.getShape(),
-                item.getFillPaint());
-        lg.setFillPaintTransformer(item.getFillPaintTransformer());
-        lg.setShapeFilled(item.isShapeFilled());
-        lg.setLine(item.getLine());
-        lg.setLineStroke(item.getLineStroke());
-        lg.setLinePaint(item.getLinePaint());
-        lg.setLineVisible(item.isLineVisible());
-        lg.setShapeVisible(item.isShapeVisible());
-        lg.setShapeOutlineVisible(item.isShapeOutlineVisible());
-        lg.setOutlinePaint(item.getOutlinePaint());
-        lg.setOutlineStroke(item.getOutlineStroke());
-        lg.setPadding(this.legendItemGraphicPadding);
-
-        LegendItemBlockContainer legendItem = new LegendItemBlockContainer(
-                new BorderArrangement(), item.getDataset(),
-                item.getSeriesKey());
-        lg.setShapeAnchor(getLegendItemGraphicAnchor());
-        lg.setShapeLocation(getLegendItemGraphicLocation());
-        legendItem.add(lg, this.legendItemGraphicEdge);
-        Font textFont = item.getLabelFont();
-        if (textFont == null) {
-            textFont = this.itemFont;
-        }
-        Paint textPaint = item.getLabelPaint();
-        if (textPaint == null) {
-            textPaint = this.itemPaint;
-        }
-        LabelBlock labelBlock = new LabelBlock(item.getLabel(), textFont,
-                textPaint);
-        labelBlock.setPadding(this.itemLabelPadding);
-        legendItem.add(labelBlock);
-        legendItem.setToolTipText(item.getToolTipText());
-        legendItem.setURLText(item.getURLText());
-
-        result = new BlockContainer(new CenterArrangement());
-        result.add(legendItem);
-
-        return result;
     }
 
     /**

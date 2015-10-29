@@ -78,11 +78,21 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.AttributedString;
 import java.text.CharacterIterator;
+import org.jfree.chart.block.Block;
+import org.jfree.chart.block.BlockContainer;
+import org.jfree.chart.block.BorderArrangement;
+import org.jfree.chart.block.CenterArrangement;
+import org.jfree.chart.block.LabelBlock;
+import org.jfree.chart.title.LegendGraphic;
+import org.jfree.chart.title.LegendItemBlockContainer;
 import org.jfree.chart.util.ParamChecks;
 
 import org.jfree.data.general.Dataset;
 import org.jfree.io.SerialUtilities;
 import org.jfree.ui.GradientPaintTransformer;
+import org.jfree.ui.RectangleAnchor;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.StandardGradientPaintTransformer;
 import org.jfree.util.AttributedStringUtilities;
 import org.jfree.util.ObjectUtilities;
@@ -1143,5 +1153,55 @@ public class LegendItem implements Cloneable, Serializable {
         this.linePaint = SerialUtilities.readPaint(stream);
         this.labelPaint = SerialUtilities.readPaint(stream);
     }
+
+	/**
+	 * Creates a legend item block.
+	 * @param legendItemGraphicPadding
+	 * @param legendItemGraphicEdge
+	 * @param itemFont
+	 * @param itemPaint
+	 * @param itemLabelPadding
+	 * @param legendItemGraphicAnchor
+	 * @param legendItemGraphicLocation
+	 * @return  The block.
+	 */
+	public Block createLegendItemBlock(RectangleInsets legendItemGraphicPadding, RectangleEdge legendItemGraphicEdge,
+			Font itemFont, Paint itemPaint, RectangleInsets itemLabelPadding, RectangleAnchor legendItemGraphicAnchor,
+			RectangleAnchor legendItemGraphicLocation) {
+		BlockContainer result;
+		LegendGraphic lg = new LegendGraphic(getShape(), getFillPaint());
+		lg.setFillPaintTransformer(getFillPaintTransformer());
+		lg.setShapeFilled(isShapeFilled());
+		lg.setLine(getLine());
+		lg.setLineStroke(getLineStroke());
+		lg.setLinePaint(getLinePaint());
+		lg.setLineVisible(isLineVisible());
+		lg.setShapeVisible(isShapeVisible());
+		lg.setShapeOutlineVisible(isShapeOutlineVisible());
+		lg.setOutlinePaint(getOutlinePaint());
+		lg.setOutlineStroke(getOutlineStroke());
+		lg.setPadding(legendItemGraphicPadding);
+		LegendItemBlockContainer legendItem = new LegendItemBlockContainer(new BorderArrangement(), getDataset(),
+				getSeriesKey());
+		lg.setShapeAnchor(legendItemGraphicAnchor);
+		lg.setShapeLocation(legendItemGraphicLocation);
+		legendItem.add(lg, legendItemGraphicEdge);
+		Font textFont = getLabelFont();
+		if (textFont == null) {
+			textFont = itemFont;
+		}
+		Paint textPaint = getLabelPaint();
+		if (textPaint == null) {
+			textPaint = itemPaint;
+		}
+		LabelBlock labelBlock = new LabelBlock(getLabel(), textFont, textPaint);
+		labelBlock.setPadding(itemLabelPadding);
+		legendItem.add(labelBlock);
+		legendItem.setToolTipText(getToolTipText());
+		legendItem.setURLText(getURLText());
+		result = new BlockContainer(new CenterArrangement());
+		result.add(legendItem);
+		return result;
+	}
 
 }
