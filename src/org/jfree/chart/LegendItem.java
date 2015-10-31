@@ -1169,6 +1169,16 @@ public class LegendItem implements Cloneable, Serializable {
 			Font itemFont, Paint itemPaint, RectangleInsets itemLabelPadding, RectangleAnchor legendItemGraphicAnchor,
 			RectangleAnchor legendItemGraphicLocation) {
 		BlockContainer result;
+		LegendItemBlockContainer legendItem = legendItem(legendItemGraphicPadding, legendItemGraphicEdge, itemFont,
+				itemPaint, itemLabelPadding, legendItemGraphicAnchor, legendItemGraphicLocation);
+		result = new BlockContainer(new CenterArrangement());
+		result.add(legendItem);
+		return result;
+	}
+
+	private LegendItemBlockContainer legendItem(RectangleInsets legendItemGraphicPadding,
+			RectangleEdge legendItemGraphicEdge, Font itemFont, Paint itemPaint, RectangleInsets itemLabelPadding,
+			RectangleAnchor legendItemGraphicAnchor, RectangleAnchor legendItemGraphicLocation) {
 		LegendGraphic lg = new LegendGraphic(getShape(), getFillPaint());
 		lg.setFillPaintTransformer(getFillPaintTransformer());
 		lg.setShapeFilled(isShapeFilled());
@@ -1199,9 +1209,7 @@ public class LegendItem implements Cloneable, Serializable {
 		legendItem.add(labelBlock);
 		legendItem.setToolTipText(getToolTipText());
 		legendItem.setURLText(getURLText());
-		result = new BlockContainer(new CenterArrangement());
-		result.add(legendItem);
-		return result;
+		return legendItem;
 	}
 
 }
