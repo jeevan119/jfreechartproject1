@@ -40,6 +40,7 @@
 
 package org.jfree.data.time.ohlc;
 
+import org.jfree.chart.util.ParamChecks;
 import org.jfree.data.ComparableObjectItem;
 import org.jfree.data.time.RegularTimePeriod;
 
@@ -142,5 +143,15 @@ public class OHLCItem extends ComparableObjectItem {
             return Double.NaN;
         }
     }
+
+	/**
+	 * Adds a data item to the series.  The values from the item passed to this method will be copied into a new object.
+	 * @since  1.0.17
+	 * @param oHLCSeries
+	 */
+	public void add(OHLCSeries oHLCSeries) {
+		ParamChecks.nullNotPermitted(this, "item");
+		oHLCSeries.add(getPeriod(), getOpenValue(), getHighValue(), getLowValue(), getCloseValue());
+	}
 
 }

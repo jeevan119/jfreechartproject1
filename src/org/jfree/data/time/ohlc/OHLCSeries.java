@@ -113,20 +113,6 @@ public class OHLCSeries extends ComparableObjectSeries {
     }
     
     /**
-     * Adds a data item to the series.  The values from the item passed to
-     * this method will be copied into a new object.
-     * 
-     * @param item  the item (<code>null</code> not permitted).
-     * 
-     * @since 1.0.17
-     */
-    public void add(OHLCItem item) {
-        ParamChecks.nullNotPermitted(item, "item");
-        add(item.getPeriod(), item.getOpenValue(), item.getHighValue(),
-                item.getLowValue(), item.getCloseValue());
-    }
-
-    /**
      * Removes the item with the specified index.
      *
      * @param index  the item index.
