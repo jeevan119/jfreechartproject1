@@ -62,6 +62,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import org.jfree.chart.util.ParamChecks;
 
 import org.jfree.util.ObjectUtilities;
@@ -580,5 +582,48 @@ public class DefaultKeyedValues2D implements KeyedValues2D, PublicCloneable,
         clone.rows = (List) ObjectUtilities.deepClone(this.rows);
         return clone;
     }
+
+	/**
+	 * Returns the set of unique values.
+	 * @return  The set of unique values.
+	 */
+	public Set getUniqueValues() {
+		Set unique = new TreeSet();
+		for (int r = 0; r < getRowCount(); r++) {
+			for (int c = 0; c < getColumnCount(); c++) {
+				Number value = getValue(r, c);
+				if (value != null) {
+					unique.add(value);
+				}
+			}
+		}
+		return unique;
+	}
+
+	/**
+	 * Returns the number of unique values.
+	 * @return  The number of unique values.
+	 */
+	public int getUniqueValueCount() {
+		return getUniqueValues().size();
+	}
+
+	/**
+	 * Returns the value for a given chip x and y or null.
+	 * @param chipx   the x-index.
+	 * @param chipy   the y-index.
+	 * @return  The data value.
+	 */
+	public Number getChipValue(Comparable chipx, Comparable chipy) {
+		int rowIndex = getRowIndex(chipx);
+		if (rowIndex < 0) {
+			return null;
+		}
+		int colIndex = getColumnIndex(chipy);
+		if (colIndex < 0) {
+			return null;
+		}
+		return getValue(rowIndex, colIndex);
+	}
 
 }

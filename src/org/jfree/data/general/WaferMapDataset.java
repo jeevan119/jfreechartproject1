@@ -157,31 +157,12 @@ public class WaferMapDataset extends AbstractDataset {
     }
 
     /**
-     * Returns the number of unique values.
-     *
-     * @return The number of unique values.
-     */
-    public int getUniqueValueCount() {
-        return getUniqueValues().size();
-    }
-
-    /**
      * Returns the set of unique values.
      *
      * @return The set of unique values.
      */
     public Set getUniqueValues() {
-        Set unique = new TreeSet();
-        //step through all the values and add them to the hash
-        for (int r = 0; r < this.data.getRowCount(); r++) {
-            for (int c = 0; c < this.data.getColumnCount(); c++) {
-                Number value = this.data.getValue(r, c);
-                if (value != null) {
-                    unique.add(value);
-                }
-            }
-        }
-        return unique;
+        return data.getUniqueValues();
     }
 
     /**
@@ -193,27 +174,7 @@ public class WaferMapDataset extends AbstractDataset {
      * @return The data value.
      */
     public Number getChipValue(int chipx, int chipy) {
-        return getChipValue(new Integer(chipx), new Integer(chipy));
-    }
-
-    /**
-     * Returns the value for a given chip x and y or null.
-     *
-     * @param chipx  the x-index.
-     * @param chipy  the y-index.
-     *
-     * @return The data value.
-     */
-    public Number getChipValue(Comparable chipx, Comparable chipy) {
-        int rowIndex = this.data.getRowIndex(chipx);
-        if (rowIndex < 0) {
-            return null;
-        }
-        int colIndex = this.data.getColumnIndex(chipy);
-        if (colIndex < 0) {
-            return null;
-        }
-        return this.data.getValue(rowIndex, colIndex);
+        return data.getChipValue(new Integer(chipx), new Integer(chipy));
     }
 
     /**
