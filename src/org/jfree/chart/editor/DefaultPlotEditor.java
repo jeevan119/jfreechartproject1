@@ -550,13 +550,8 @@ public class DefaultPlotEditor extends JPanel implements ActionListener {
      */
     public void updatePlotProperties(Plot plot) {
 
-        // set the plot properties...
-        plot.setOutlinePaint(getOutlinePaint());
-        plot.setOutlineStroke(getOutlineStroke());
-        plot.setBackgroundPaint(getBackgroundPaint());
-        plot.setInsets(getPlotInsets());
-
-        // then the axis properties...
+        Axis rangeAxis = rangeAxis(plot);
+		// then the axis properties...
         if (this.domainAxisPropertyPanel != null) {
             Axis domainAxis = null;
             if (plot instanceof CategoryPlot) {
@@ -569,25 +564,6 @@ public class DefaultPlotEditor extends JPanel implements ActionListener {
             }
             if (domainAxis != null) {
                 this.domainAxisPropertyPanel.setAxisProperties(domainAxis);
-            }
-        }
-
-        if (this.rangeAxisPropertyPanel != null) {
-            Axis rangeAxis = null;
-            if (plot instanceof CategoryPlot) {
-                CategoryPlot p = (CategoryPlot) plot;
-                rangeAxis = p.getRangeAxis();
-            }
-            else if (plot instanceof XYPlot) {
-                XYPlot p = (XYPlot) plot;
-                rangeAxis = p.getRangeAxis();
-            }
-            else if (plot instanceof PolarPlot) {
-                PolarPlot p = (PolarPlot) plot;
-                rangeAxis = p.getAxis();
-            }
-            if (rangeAxis != null) {
-                this.rangeAxisPropertyPanel.setAxisProperties(rangeAxis);
             }
         }
 
@@ -639,6 +615,30 @@ public class DefaultPlotEditor extends JPanel implements ActionListener {
 //dmo: (end dmo additions)
 
     }
+
+	private Axis rangeAxis(Plot plot) {
+		Axis rangeAxis = null;
+		plot.setOutlinePaint(getOutlinePaint());
+		plot.setOutlineStroke(getOutlineStroke());
+		plot.setBackgroundPaint(getBackgroundPaint());
+		plot.setInsets(getPlotInsets());
+		if (this.rangeAxisPropertyPanel != null) {
+			if (plot instanceof CategoryPlot) {
+				CategoryPlot p = (CategoryPlot) plot;
+				rangeAxis = p.getRangeAxis();
+			} else if (plot instanceof XYPlot) {
+				XYPlot p = (XYPlot) plot;
+				rangeAxis = p.getRangeAxis();
+			} else if (plot instanceof PolarPlot) {
+				PolarPlot p = (PolarPlot) plot;
+				rangeAxis = p.getAxis();
+			}
+			if (rangeAxis != null) {
+				this.rangeAxisPropertyPanel.setAxisProperties(rangeAxis);
+			}
+		}
+		return rangeAxis;
+	}
 
 	public void setDrawLines(Boolean drawLines) {
 		this.drawLines = drawLines;
