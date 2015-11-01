@@ -191,43 +191,8 @@ public class ColorBar implements Cloneable, Serializable {
                        Rectangle2D plotArea, Rectangle2D dataArea,
                        Rectangle2D reservedArea, RectangleEdge edge) {
 
-        Rectangle2D colorBarArea = null;
-
-        double thickness = calculateBarThickness(dataArea, edge);
-        if (this.colorBarThickness > 0) {
-            thickness = this.colorBarThickness;  // allow fixed thickness
-        }
-
-        double length;
-        if (RectangleEdge.isLeftOrRight(edge)) {
-            length = dataArea.getHeight();
-        }
-        else {
-            length = dataArea.getWidth();
-        }
-
-        if (this.colorBarLength > 0) {
-            length = this.colorBarLength;
-        }
-
-        if (edge == RectangleEdge.BOTTOM) {
-            colorBarArea = new Rectangle2D.Double(dataArea.getX(),
-                    plotArea.getMaxY() + this.outerGap, length, thickness);
-        }
-        else if (edge == RectangleEdge.TOP) {
-            colorBarArea = new Rectangle2D.Double(dataArea.getX(),
-                    reservedArea.getMinY() + this.outerGap, length, thickness);
-        }
-        else if (edge == RectangleEdge.LEFT) {
-            colorBarArea = new Rectangle2D.Double(plotArea.getX() - thickness
-                    - this.outerGap, dataArea.getMinY(), thickness, length);
-        }
-        else if (edge == RectangleEdge.RIGHT) {
-            colorBarArea = new Rectangle2D.Double(plotArea.getMaxX()
-                    + this.outerGap, dataArea.getMinY(), thickness, length);
-        }
-
-        // update, but dont draw tick marks (needed for stepped colors)
+        Rectangle2D colorBarArea = colorBarArea(plotArea, dataArea, reservedArea, edge);
+		// update, but dont draw tick marks (needed for stepped colors)
         this.axis.refreshTicks(g2, new AxisState(), colorBarArea, edge);
 
         drawColorBar(g2, colorBarArea, edge);
@@ -258,6 +223,38 @@ public class ColorBar implements Cloneable, Serializable {
         return state.getCursor();
 
     }
+
+	private Rectangle2D colorBarArea(Rectangle2D plotArea, Rectangle2D dataArea, Rectangle2D reservedArea,
+			RectangleEdge edge) {
+		Rectangle2D colorBarArea = null;
+		double thickness = calculateBarThickness(dataArea, edge);
+		if (this.colorBarThickness > 0) {
+			thickness = this.colorBarThickness;
+		}
+		double length;
+		if (RectangleEdge.isLeftOrRight(edge)) {
+			length = dataArea.getHeight();
+		} else {
+			length = dataArea.getWidth();
+		}
+		if (this.colorBarLength > 0) {
+			length = this.colorBarLength;
+		}
+		if (edge == RectangleEdge.BOTTOM) {
+			colorBarArea = new Rectangle2D.Double(dataArea.getX(), plotArea.getMaxY() + this.outerGap, length,
+					thickness);
+		} else if (edge == RectangleEdge.TOP) {
+			colorBarArea = new Rectangle2D.Double(dataArea.getX(), reservedArea.getMinY() + this.outerGap, length,
+					thickness);
+		} else if (edge == RectangleEdge.LEFT) {
+			colorBarArea = new Rectangle2D.Double(plotArea.getX() - thickness - this.outerGap, dataArea.getMinY(),
+					thickness, length);
+		} else if (edge == RectangleEdge.RIGHT) {
+			colorBarArea = new Rectangle2D.Double(plotArea.getMaxX() + this.outerGap, dataArea.getMinY(), thickness,
+					length);
+		}
+		return colorBarArea;
+	}
 
     /**
      * Draws the plot on a Java 2D graphics device (such as the screen or a
