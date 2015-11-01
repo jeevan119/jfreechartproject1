@@ -1496,49 +1496,46 @@ public abstract class ChartFactory {
             boolean legend, boolean tooltips, boolean urls) {
 
         ParamChecks.nullNotPermitted(orientation, "orientation");
-        CategoryAxis categoryAxis = new CategoryAxis(categoryAxisLabel);
-        categoryAxis.setCategoryMargin(0.0);
-
-        ValueAxis valueAxis = new NumberAxis(valueAxisLabel);
-
-        WaterfallBarRenderer renderer = new WaterfallBarRenderer();
-        if (orientation == PlotOrientation.HORIZONTAL) {
-            ItemLabelPosition position = new ItemLabelPosition(
-                    ItemLabelAnchor.CENTER, TextAnchor.CENTER,
-                    TextAnchor.CENTER, Math.PI / 2.0);
-            renderer.setBasePositiveItemLabelPosition(position);
-            renderer.setBaseNegativeItemLabelPosition(position);
-         }
-        else if (orientation == PlotOrientation.VERTICAL) {
-            ItemLabelPosition position = new ItemLabelPosition(
-                    ItemLabelAnchor.CENTER, TextAnchor.CENTER,
-                    TextAnchor.CENTER, 0.0);
-            renderer.setBasePositiveItemLabelPosition(position);
-            renderer.setBaseNegativeItemLabelPosition(position);
-        }
-        if (tooltips) {
-            StandardCategoryToolTipGenerator generator
-                = new StandardCategoryToolTipGenerator();
-            renderer.setBaseToolTipGenerator(generator);
-        }
-        if (urls) {
-            renderer.setBaseItemURLGenerator(
-                    new StandardCategoryURLGenerator());
-        }
-
-        CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis,
-                renderer);
-        plot.clearRangeMarkers();
+        CategoryPlot plot = plot(categoryAxisLabel, valueAxisLabel, dataset, orientation, tooltips, urls);
+		plot.clearRangeMarkers();
         Marker baseline = new ValueMarker(0.0);
         baseline.setPaint(Color.black);
         plot.addRangeMarker(baseline, Layer.FOREGROUND);
-        plot.setOrientation(orientation);
         JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT,
                 plot, legend);
         currentTheme.apply(chart);
         return chart;
 
     }
+
+	private static CategoryPlot plot(String categoryAxisLabel, String valueAxisLabel, CategoryDataset dataset,
+			PlotOrientation orientation, boolean tooltips, boolean urls) {
+		CategoryAxis categoryAxis = new CategoryAxis(categoryAxisLabel);
+		categoryAxis.setCategoryMargin(0.0);
+		ValueAxis valueAxis = new NumberAxis(valueAxisLabel);
+		WaterfallBarRenderer renderer = new WaterfallBarRenderer();
+		if (orientation == PlotOrientation.HORIZONTAL) {
+			ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER,
+					TextAnchor.CENTER, Math.PI / 2.0);
+			renderer.setBasePositiveItemLabelPosition(position);
+			renderer.setBaseNegativeItemLabelPosition(position);
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER,
+					TextAnchor.CENTER, 0.0);
+			renderer.setBasePositiveItemLabelPosition(position);
+			renderer.setBaseNegativeItemLabelPosition(position);
+		}
+		if (tooltips) {
+			StandardCategoryToolTipGenerator generator = new StandardCategoryToolTipGenerator();
+			renderer.setBaseToolTipGenerator(generator);
+		}
+		if (urls) {
+			renderer.setBaseItemURLGenerator(new StandardCategoryURLGenerator());
+		}
+		CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis, renderer);
+		plot.setOrientation(orientation);
+		return plot;
+	}
 
     /**
      * Creates a polar plot for the specified dataset (x-values interpreted as
