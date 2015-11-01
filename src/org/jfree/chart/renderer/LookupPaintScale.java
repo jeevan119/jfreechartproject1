@@ -309,27 +309,30 @@ public class LookupPaintScale
             return this.defaultPaint;
         }
 
-        // for value in bounds, do the lookup...
-        int low = 0;
-        int high = this.lookupTable.size() - 1;
-        while (high - low > 1) {
-            int current = (low + high) / 2;
-            item = (PaintItem) this.lookupTable.get(current);
-            if (value >= item.value) {
-                low = current;
-            }
-            else {
-                high = current;
-            }
-        }
-        if (high > low) {
-            item = (PaintItem) this.lookupTable.get(high);
-            if (value < item.value) {
-                item = (PaintItem) this.lookupTable.get(low);
-            }
-        }
-        return (item != null ? item.paint : this.defaultPaint);
+        item = item(value, item);
+		return (item != null ? item.paint : this.defaultPaint);
     }
+
+	private LookupPaintScale.PaintItem item(double value, LookupPaintScale.PaintItem item) {
+		int low = 0;
+		int high = this.lookupTable.size() - 1;
+		while (high - low > 1) {
+			int current = (low + high) / 2;
+			item = (PaintItem) this.lookupTable.get(current);
+			if (value >= item.value) {
+				low = current;
+			} else {
+				high = current;
+			}
+		}
+		if (high > low) {
+			item = (PaintItem) this.lookupTable.get(high);
+			if (value < item.value) {
+				item = (PaintItem) this.lookupTable.get(low);
+			}
+		}
+		return item;
+	}
 
 
     /**
