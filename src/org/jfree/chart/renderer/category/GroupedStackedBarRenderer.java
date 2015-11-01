@@ -143,39 +143,39 @@ public class GroupedStackedBarRenderer extends StackedBarRenderer
         CategoryAxis xAxis = plot.getDomainAxisForDataset(rendererIndex);
         CategoryDataset data = plot.getDataset(rendererIndex);
         if (data != null) {
-            PlotOrientation orientation = plot.getOrientation();
-            double space = 0.0;
-            if (orientation == PlotOrientation.HORIZONTAL) {
-                space = dataArea.getHeight();
-            }
-            else if (orientation == PlotOrientation.VERTICAL) {
-                space = dataArea.getWidth();
-            }
-            double maxWidth = space * getMaximumBarWidth();
-            int groups = this.seriesToGroupMap.getGroupCount();
-            int categories = data.getColumnCount();
-            int columns = groups * categories;
-            double categoryMargin = 0.0;
-            double itemMargin = 0.0;
-            if (categories > 1) {
-                categoryMargin = xAxis.getCategoryMargin();
-            }
-            if (groups > 1) {
-                itemMargin = getItemMargin();
-            }
-
-            double used = space * (1 - xAxis.getLowerMargin()
-                                     - xAxis.getUpperMargin()
-                                     - categoryMargin - itemMargin);
-            if (columns > 0) {
-                state.setBarWidth(Math.min(used / columns, maxWidth));
-            }
-            else {
-                state.setBarWidth(Math.min(used, maxWidth));
-            }
+            state(plot, dataArea, state, xAxis, data);
         }
 
     }
+
+	private void state(CategoryPlot plot, Rectangle2D dataArea, CategoryItemRendererState state, CategoryAxis xAxis,
+			CategoryDataset data) {
+		PlotOrientation orientation = plot.getOrientation();
+		double space = 0.0;
+		if (orientation == PlotOrientation.HORIZONTAL) {
+			space = dataArea.getHeight();
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			space = dataArea.getWidth();
+		}
+		double maxWidth = space * getMaximumBarWidth();
+		int groups = this.seriesToGroupMap.getGroupCount();
+		int categories = data.getColumnCount();
+		int columns = groups * categories;
+		double categoryMargin = 0.0;
+		double itemMargin = 0.0;
+		if (categories > 1) {
+			categoryMargin = xAxis.getCategoryMargin();
+		}
+		if (groups > 1) {
+			itemMargin = getItemMargin();
+		}
+		double used = space * (1 - xAxis.getLowerMargin() - xAxis.getUpperMargin() - categoryMargin - itemMargin);
+		if (columns > 0) {
+			state.setBarWidth(Math.min(used / columns, maxWidth));
+		} else {
+			state.setBarWidth(Math.min(used, maxWidth));
+		}
+	}
 
     /**
      * Calculates the coordinate of the first "side" of a bar.  This will be
